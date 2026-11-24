@@ -30,7 +30,10 @@ export const usePluginStore = defineStore("plugins", () => {
   async function reload(): Promise<void> {
     loaded.value = true;
     try {
-      plugins.value = (await pluginApi.getPlugins()).data ?? [];
+      const listed = (await pluginApi.getPlugins()).data;
+      // Anything that is not a list is an answer we cannot read, and a store
+      // with no plugins is what that leaves the page with.
+      plugins.value = Array.isArray(listed) ? listed : [];
     } catch {
       plugins.value = [];
     }
@@ -41,8 +44,9 @@ export const usePluginStore = defineStore("plugins", () => {
    *  which is what the server answers anyway; a failed read leaves it empty so
    *  its gated actions stay hidden rather than appearing unconfigured. */
   async function loadSettings(): Promise<void> {
+    const known = Array.isArray(plugins.value) ? plugins.value : [];
     const entries = await Promise.all(
-      plugins.value.map(async (plugin) => {
+      known.map(async (plugin) => {
         try {
           const reply = await pluginApi.getSettings(plugin.id);
           return [plugin.id, reply.data?.values ?? {}] as const;
