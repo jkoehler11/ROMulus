@@ -1,12 +1,12 @@
 import httpx2
 import pytest
-
 from utils.context import (
-    ctx_httpx_sync_client,
     create_httpx_client,
+    ctx_httpx_sync_client,
     sync_httpx_client,
 )
-from utils.ssrf import ValidationError, validate_url_for_http_request
+from utils.ssrf import validate_url_for_http_request
+from utils.validation import ValidationError
 
 
 def test_the_shared_client_is_the_one_the_app_created():

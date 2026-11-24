@@ -48,7 +48,12 @@ function click(el: Element, init: MouseEventInit = {}): boolean {
     { once: true },
   );
   el.dispatchEvent(
-    new MouseEvent("click", { bubbles: true, cancelable: true, ...init }),
+    new MouseEvent("click", {
+      bubbles: true,
+      cancelable: true,
+      button: 0,
+      ...init,
+    }),
   );
   return prevented;
 }

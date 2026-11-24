@@ -714,20 +714,22 @@ def _slug(value: Any) -> str | None:
 def _text(value: Any, limit: int) -> str | None:
     if not isinstance(value, str):
         return None
-    value = value.strip()
-    if not value or len(value) > limit:
+    # A local keeps the type the check proved: reassigning the Any parameter
+    # would leave mypy with Any on the way out.
+    text = value.strip()
+    if not text or len(text) > limit:
         return None
-    return value
+    return text
 
 
 def _icon(value: Any) -> str | None:
     """An icon name the UI can resolve, or None to fall back to its default."""
     if not isinstance(value, str):
         return None
-    value = value.strip()
-    if not value or len(value) > MAX_ICON_LENGTH or not ICON_PATTERN.fullmatch(value):
+    icon = value.strip()
+    if not icon or len(icon) > MAX_ICON_LENGTH or not ICON_PATTERN.fullmatch(icon):
         return None
-    return value
+    return icon
 
 
 def _image(value: Any) -> str | None:
@@ -1008,6 +1010,9 @@ def _parse_setting(raw: Any, plugin_id: str) -> PluginSettingSchema | None:
         log.warning(f"Plugins: {plugin_id}.{key} has an unknown type {kind!r}")
         return None
 
+    # Declared once so every branch below writes the same variable, and the
+    # schema gets a value on every path.
+    default: str | int | float | bool | None = None
     options: list[PluginSettingOptionSchema] = []
     if kind == "select":
         raw_options = raw.get("options")
@@ -1047,10 +1052,6 @@ def _parse_setting(raw: Any, plugin_id: str) -> PluginSettingSchema | None:
             if isinstance(raw_max, int) and 1 <= raw_max <= MAX_GROUPS
             else MAX_GROUPS
         )
-        # A list starts empty, and an empty list is the same as none: the form
-        # adds the first entry when the user asks for one. The annotation holds
-        # the branches below to one variable without narrowing it to bool.
-        default: str | int | float | bool | None = None
 
     if kind != "groups":
         declared = raw.get("default")

@@ -376,11 +376,14 @@ function onActivate(e: MouseEvent): void {
   emit("activate");
 }
 
-function onClick(e: MouseEvent) {
+function onClick(e?: MouseEvent) {
   if (props.action === "more" || props.action === "status") return;
-  if (linkHref.value && (e.button !== 0 || opensInNewContext(e))) return;
-  e.preventDefault();
-  e.stopPropagation();
+  // A keyboard activation arrives without a button, and that is a plain click:
+  // only a button that is present and not the primary one opens elsewhere.
+  const button = typeof e?.button === "number" ? e.button : 0;
+  if (linkHref.value && (button !== 0 || (e && opensInNewContext(e)))) return;
+  e?.preventDefault();
+  e?.stopPropagation();
   if (props.action === "collection") collectionOpen.value = true;
   preset.value.onClick?.();
 }
@@ -570,7 +573,7 @@ function onClick(e: MouseEvent) {
       },
     ]"
     :aria-label="label ?? preset.label"
-    @click="manual ? onActivate($event) : onClick()"
+    @click="manual ? onActivate($event) : onClick($event)"
   >
     <img
       v-if="preset.image"

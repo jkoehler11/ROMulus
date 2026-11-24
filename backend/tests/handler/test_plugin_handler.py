@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+from typing import Any
 
 import pytest
 from handler import plugin_handler
@@ -13,7 +14,7 @@ from handler.plugin_handler import (
 )
 
 
-def write_plugin(base: Path, folder: str, manifest: dict | str) -> Path:
+def write_plugin(base: Path, folder: str, manifest: dict[str, Any] | str) -> Path:
     """Write one plugin folder and answer the manifest path it wrote."""
     path = base / folder
     path.mkdir(parents=True)
@@ -23,7 +24,7 @@ def write_plugin(base: Path, folder: str, manifest: dict | str) -> Path:
     return manifest_path
 
 
-def manifest(plugin_id: str = "rommdeck", **overrides) -> dict:
+def manifest(plugin_id: str = "rommdeck", **overrides: Any) -> dict[str, Any]:
     data = {
         "id": plugin_id,
         "name": "RommDeck",

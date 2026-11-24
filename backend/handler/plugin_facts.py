@@ -27,7 +27,8 @@ from endpoints.responses.plugin import (
     PluginSlot,
 )
 from utils.context import sync_httpx_client
-from utils.ssrf import ValidationError, validate_url_for_http_request
+from utils.ssrf import validate_url_for_http_request
+from utils.validation import ValidationError
 
 # `{setting.<key>}` in a template. Held here rather than imported from the
 # handler: the handler reads panels, so the import would go both ways.
