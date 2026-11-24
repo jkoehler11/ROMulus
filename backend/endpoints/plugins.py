@@ -1,3 +1,5 @@
+from typing import Any
+
 from decorators.auth import protected_route
 from fastapi import HTTPException, Request, status
 from handler.auth.constants import Scope
@@ -38,7 +40,9 @@ class PluginInstallRequest(BaseModel):
     """Where a new plugin comes from: a URL to fetch, or a manifest to store."""
 
     url: str | None = None
-    manifest: dict | None = Field(default=None, description="A plugin.json body")
+    manifest: dict[str, Any] | None = Field(
+        default=None, description="A plugin.json body"
+    )
 
 
 def _require_admin(request: Request) -> None:

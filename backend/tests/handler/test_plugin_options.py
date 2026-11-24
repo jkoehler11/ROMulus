@@ -6,6 +6,8 @@ the query is substituted, how an answer is read, and what a missing source looks
 like to a form.
 """
 
+from typing import Any
+
 import pytest
 from endpoints.responses.plugin import (
     PluginOptionSourceSchema,
@@ -34,8 +36,8 @@ DEVICES = {
 }
 
 
-def source(**overrides) -> PluginOptionSourceSchema:
-    values: dict = {
+def source(**overrides: Any) -> PluginOptionSourceSchema:
+    values: dict[str, Any] = {
         "url": "https://example.com/api/devices",
         "query": {"input": '{"json":{"search":"{query}","limit":20}}'},
         "items": "result.data.json.devices",
@@ -47,8 +49,8 @@ def source(**overrides) -> PluginOptionSourceSchema:
     return PluginOptionSourceSchema(**values)
 
 
-def setting(**overrides) -> PluginSettingSchema:
-    values: dict = {
+def setting(**overrides: Any) -> PluginSettingSchema:
+    values: dict[str, Any] = {
         "key": "handheld",
         "label": "Handheld",
         "type": "search",
@@ -67,6 +69,9 @@ class Plugin:
         self.settings = list(fields)
 
 
+Asked = list[tuple[str, dict[str, str]]]
+
+
 @pytest.fixture
 def asked(monkeypatch: pytest.MonkeyPatch):
     """Answer every fetch from a dictionary, and record what was asked."""
@@ -81,7 +86,7 @@ def asked(monkeypatch: pytest.MonkeyPatch):
     return calls
 
 
-def test_a_search_offers_what_the_source_has(asked: list) -> None:
+def test_a_search_offers_what_the_source_has(asked: Asked) -> None:
     options, note = plugin_options.options_for(Plugin(setting()), "handheld", "pocket")
 
     assert note is None
@@ -91,7 +96,7 @@ def test_a_search_offers_what_the_source_has(asked: list) -> None:
     ]
 
 
-def test_the_query_is_substituted_once(asked: list) -> None:
+def test_the_query_is_substituted_once(asked: Asked) -> None:
     plugin_options.options_for(Plugin(setting()), "handheld", "Luigi's Mansion")
 
     sent = asked[0][1]["input"]
@@ -101,21 +106,21 @@ def test_the_query_is_substituted_once(asked: list) -> None:
     assert "\\u" not in sent
 
 
-def test_a_quote_in_the_query_does_not_break_the_template(asked: list) -> None:
+def test_a_quote_in_the_query_does_not_break_the_template(asked: Asked) -> None:
     plugin_options.options_for(Plugin(setting()), "handheld", 'a "quoted" name')
 
     sent = asked[0][1]["input"]
     assert '"search":"a \\"quoted\\" name"' in sent
 
 
-def test_an_entry_without_a_value_or_a_name_is_not_offered(asked: list) -> None:
+def test_an_entry_without_a_value_or_a_name_is_not_offered(asked: Asked) -> None:
     options, _ = plugin_options.options_for(Plugin(setting()), "handheld", "")
 
     assert len(options) == 2
     assert all(o.value and o.label for o in options)
 
 
-def test_a_plain_path_names_an_entry(asked: list) -> None:
+def test_a_plain_path_names_an_entry(asked: Asked) -> None:
     plain = setting(source=source(label="modelName"))
 
     options, _ = plugin_options.options_for(Plugin(plain), "handheld", "")
@@ -123,7 +128,7 @@ def test_a_plain_path_names_an_entry(asked: list) -> None:
     assert options[0].label == "KONKR Pocket FIT"
 
 
-def test_the_limit_bounds_what_is_offered(asked: list) -> None:
+def test_the_limit_bounds_what_is_offered(asked: Asked) -> None:
     short = setting(source=source(limit=1))
 
     options, _ = plugin_options.options_for(Plugin(short), "handheld", "")
@@ -154,7 +159,7 @@ def test_a_reply_of_the_wrong_shape_is_a_note(monkeypatch: pytest.MonkeyPatch) -
     assert note is not None and "not a list" in note
 
 
-def test_a_search_is_asked_once_per_query(asked: list) -> None:
+def test_a_search_is_asked_once_per_query(asked: Asked) -> None:
     plugin = Plugin(setting())
     plugin_options.options_for(plugin, "handheld", "retroid")
     plugin_options.options_for(plugin, "handheld", "retroid")
@@ -184,7 +189,7 @@ def test_a_late_match_is_still_found(asked) -> None:
 
     import handler.plugin_options as options_module
 
-    options_module._fetch = fake_fetch  # type: ignore[assignment]
+    options_module._fetch = fake_fetch
     narrow = setting(source=source(limit=2, query={}))
     options_module._CACHE.clear()
 
@@ -223,14 +228,14 @@ def test_a_full_cache_is_dropped_rather_than_grown(asked) -> None:
     assert len(options_module._CACHE) == 1
 
 
-def test_a_field_that_is_not_searchable_is_refused(asked: list) -> None:
+def test_a_field_that_is_not_searchable_is_refused(asked: Asked) -> None:
     plain = Plugin(PluginSettingSchema(key="name", label="Name"))
 
     with pytest.raises(PluginRefused):
         plugin_options.options_for(plain, "name", "")
 
 
-def test_a_field_inside_a_group_can_be_searched(asked: list) -> None:
+def test_a_field_inside_a_group_can_be_searched(asked: Asked) -> None:
     group = PluginSettingSchema(
         key="setups",
         label="Setups",

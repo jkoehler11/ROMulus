@@ -7,6 +7,7 @@ looks like to the page.
 """
 
 import json
+from typing import Any
 
 import pytest
 from handler import plugin_facts
@@ -49,8 +50,8 @@ LISTINGS = {
 }
 
 
-def spec(**overrides) -> PluginFactSpec:
-    values: dict = {
+def spec(**overrides: Any) -> PluginFactSpec:
+    values: dict[str, Any] = {
         "id": "handheld",
         "label": "Handheld reports",
         "slot": "game.details",
@@ -69,7 +70,7 @@ def source(monkeypatch: pytest.MonkeyPatch):
 
     calls: list[str] = []
 
-    def fake_fetch(url: str) -> dict:
+    def fake_fetch(url: str) -> dict[str, Any]:
         calls.append(url)
         return LISTINGS
 
@@ -131,7 +132,9 @@ def test_a_narrowed_panel_links_to_the_narrowed_report() -> None:
         narrow_link="https://example.com/listings?search={rom_name}&deviceIds={setting.handheld}",
     )
 
-    assert link_for(narrow_spec, True).endswith("deviceIds={setting.handheld}")
+    narrowed_link = link_for(narrow_spec, True)
+    assert narrowed_link is not None
+    assert narrowed_link.endswith("deviceIds={setting.handheld}")
     assert (
         link_for(narrow_spec, False) == "https://example.com/listings?search={rom_name}"
     )
@@ -156,8 +159,8 @@ def test_a_source_is_asked_for_once_per_answer(source: list[str]) -> None:
 
 
 def test_a_title_nobody_reported_on_says_so(source: list[str]) -> None:
-    empty = {"result": {"data": {"json": {"listings": []}}}}
-    plugin_facts._fetch = lambda url: empty  # type: ignore[assignment]
+    empty: dict[str, Any] = {"result": {"data": {"json": {"listings": []}}}}
+    plugin_facts._fetch = lambda url: empty
 
     fact = fill_fact("emuready", spec(), "https://example.com/api", None)
 
@@ -166,7 +169,7 @@ def test_a_title_nobody_reported_on_says_so(source: list[str]) -> None:
 
 
 def test_an_answer_in_another_shape_is_explained(source: list[str]) -> None:
-    plugin_facts._fetch = lambda url: {"unexpected": True}  # type: ignore[assignment]
+    plugin_facts._fetch = lambda url: {"unexpected": True}
 
     fact = fill_fact("emuready", spec(), "https://example.com/api", None)
 
@@ -177,7 +180,7 @@ def test_an_answer_in_another_shape_is_explained(source: list[str]) -> None:
 def test_a_failing_source_is_a_note_not_an_error(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    def failing(url: str) -> dict:
+    def failing(url: str) -> dict[str, Any]:
         raise ValueError("The source answered 503")
 
     monkeypatch.setattr(plugin_facts, "_fetch", failing)

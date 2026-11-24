@@ -11,7 +11,7 @@ from __future__ import annotations
 import json
 import logging
 import time
-from typing import Any, Final
+from typing import Any, Final, Protocol
 
 import httpx2
 from endpoints.responses.plugin import (
@@ -22,9 +22,17 @@ from endpoints.responses.plugin import (
 from fastapi import status
 from utils.context import sync_httpx_client
 
-from handler.plugin_handler import PluginRefused, PluginSchema
+from handler.plugin_handler import PluginRefused
 
 logger = logging.getLogger(__name__)
+
+class Searchable(Protocol):
+    """The part of a plugin a search reads: its id, name and settings."""
+
+    id: str
+    name: str
+    settings: list[PluginSettingSchema]
+
 
 OPTION_TIMEOUT: Final[float] = 8.0
 # A search that took this long to answer is still worth showing, but not for
@@ -39,7 +47,7 @@ _CACHE: dict[tuple[str, str], tuple[float, list[PluginOptionSchema]]] = {}
 
 
 def options_for(
-    plugin: PluginSchema, key: str, query: str
+    plugin: Searchable, key: str, query: str
 ) -> tuple[list[PluginOptionSchema], str | None]:
     """The choices a searchable setting offers for what the user typed.
 

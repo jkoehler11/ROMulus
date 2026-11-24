@@ -667,7 +667,7 @@ def test_a_traversal_id_cannot_be_removed(shelf):
     assert outside.exists()
 
 
-def with_settings(**extra) -> dict:
+def with_settings(**extra: Any) -> dict[str, Any]:
     data = manifest()
     data["settings"] = [
         {

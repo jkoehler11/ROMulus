@@ -54,7 +54,7 @@ SETTINGS_NAME: Final[str] = "settings.json"
 # a JSON file listing manifests by URL; nothing is fetched until someone opens
 # the store or installs from it.
 STORE_URL: Final[str] = (
-    "https://raw.githubusercontent.com/jkoehler11/romm-plugins/main/index.json"
+    "https://raw.githubusercontent.com/jkoehler11/romulus-plugins/main/index.json"
 )
 MAX_STORE_BYTES: Final[int] = 256 * 1024
 MAX_SETTINGS: Final[int] = 16

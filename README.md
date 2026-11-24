@@ -3,7 +3,7 @@
 > **ROMulus is a fork of RomM with a plugin system.** Everything RomM does, it still does; on top of that, a plugin is a manifest on disk that adds actions and panels — what emulator runs a game well on your handheld, a link that opens a game in another app, a dashboard. Plugins run no code on the server, and a plugin can only ask it to read a public URL.
 >
 > - **Install:** the same Docker images and the same `docker-compose.yml`, with plugins enabled by dropping a folder into `$ROMM_BASE_PATH/plugins/`. See [docs/PLUGINS.md](docs/PLUGINS.md).
-> - **The plugin index:** [jkoehler11/romm-plugins](https://github.com/jkoehler11/romm-plugins) — browsable from Settings → Plugins → Add plugin → Shop.
+> - **The plugin index:** [jkoehler11/romulus-plugins](https://github.com/jkoehler11/romulus-plugins) — browsable from Settings → Plugins → Add plugin → Shop.
 > - **Upstream is [rommapp/romm](https://github.com/rommapp/romm)**, and most of this code is theirs. This fork changes what [NOTICE](NOTICE) lists, and nothing else. Bugs in that code belong upstream.
 > - **Licence:** AGPL-3.0, unchanged. If you run ROMulus as a service for other people, they are entitled to its source, which is this repository.
 >
