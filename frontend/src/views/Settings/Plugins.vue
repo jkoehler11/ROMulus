@@ -382,7 +382,7 @@ onMounted(async () => {
               {{ t("settings.plugins-add-store-hint") }}
             </p>
             <RBtn
-              variant="surface"
+              variant="outlined"
               size="small"
               prepend-icon="mdi-storefront-outline"
               @click="openBrowse()"
@@ -480,6 +480,7 @@ onMounted(async () => {
       :installed-ids="store.plugins.map((plugin) => plugin.id)"
       :busy-id="addBusy"
       :problem="storeProblem"
+      :loading="store.storeLoading"
       @install="addFromStore"
       @refresh="openStore(true)"
     />

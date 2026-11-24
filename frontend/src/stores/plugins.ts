@@ -15,6 +15,9 @@ export const usePluginStore = defineStore("plugins", () => {
   const loaded = ref(false);
   const store = ref<StorePluginSchema[]>([]);
   const storeLoaded = ref(false);
+  // Reading the index is not the same as having read it: until the first reply
+  // arrives the list is empty because nothing has been asked for yet.
+  const storeLoading = ref(false);
   // Each plugin's saved values, keyed by plugin id. Actions are expanded from
   // these, so they load with the shelf rather than when a form is opened.
   const values = ref<Record<string, Record<string, unknown>>>({});
@@ -89,11 +92,14 @@ export const usePluginStore = defineStore("plugins", () => {
     // was wrong a minute ago may have been fixed since.
     if (storeLoaded.value && !fresh) return null;
     storeLoaded.value = true;
+    storeLoading.value = true;
     try {
       store.value = (await pluginApi.getStore()).data ?? [];
     } catch (error) {
       storeLoaded.value = false;
       return refusal(error);
+    } finally {
+      storeLoading.value = false;
     }
     return null;
   }
@@ -143,6 +149,7 @@ export const usePluginStore = defineStore("plugins", () => {
     loaded,
     store,
     storeLoaded,
+    storeLoading,
     values,
     settingsFor,
     load,

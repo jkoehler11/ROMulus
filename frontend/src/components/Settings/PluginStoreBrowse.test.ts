@@ -91,6 +91,7 @@ function mountStore(installedIds: string[] = []) {
       installedIds,
       busyId: "",
       problem: "",
+      loading: false,
     },
   });
 }
@@ -136,6 +137,43 @@ describe("PluginStoreBrowse: finding a plugin", () => {
     await media!.trigger("click");
 
     expect(names(wrapper)).toEqual(["RommDeck", "EmuReady", "Gallery"]);
+  });
+
+  it("says it is loading rather than that the store is empty", () => {
+    // Between opening Browse and the first reply the list is empty, and an
+    // empty list here would be a lie about the catalogue.
+    const wrapper = mount(PluginStoreBrowse, {
+      props: {
+        open: true,
+        entries: [],
+        installedIds: [],
+        busyId: "",
+        problem: "",
+        loading: true,
+      },
+    });
+
+    expect(wrapper.find(".store__empty").text()).toContain(
+      "common.loading-ellipsis",
+    );
+    expect(wrapper.find(".store__empty").attributes("aria-busy")).toBe("true");
+  });
+
+  it("announces which filter is on", async () => {
+    const wrapper = mountStore();
+
+    expect(wrapper.findAll(".store__tag")[0]!.attributes("aria-pressed")).toBe(
+      "true",
+    );
+
+    await wrapper.findAll(".store__tag")[1]!.trigger("click");
+
+    expect(wrapper.findAll(".store__tag")[0]!.attributes("aria-pressed")).toBe(
+      "false",
+    );
+    expect(wrapper.findAll(".store__tag")[1]!.attributes("aria-pressed")).toBe(
+      "true",
+    );
   });
 
   it("says when nothing matches", async () => {
@@ -184,6 +222,7 @@ describe("PluginStoreBrowse: installing", () => {
         installedIds: [],
         busyId: "",
         problem: "The store could not be read",
+        loading: false,
       },
     });
 

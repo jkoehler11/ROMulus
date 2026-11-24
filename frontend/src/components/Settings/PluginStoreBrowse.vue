@@ -15,6 +15,7 @@ const props = defineProps<{
   installedIds: string[];
   busyId: string;
   problem: string;
+  loading: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -103,6 +104,7 @@ function close(): void {
           <button
             class="store__tag"
             :class="{ 'is-on': tag === '' }"
+            :aria-pressed="tag === ''"
             type="button"
             @click="tag = ''"
           >
@@ -113,6 +115,7 @@ function close(): void {
             :key="name"
             class="store__tag"
             :class="{ 'is-on': tag === name }"
+            :aria-pressed="tag === name"
             type="button"
             @click="tag = tag === name ? '' : name"
           >
@@ -125,6 +128,10 @@ function close(): void {
           <RBtn variant="text" size="small" @click="emit('refresh')">
             {{ t("settings.plugins-store-retry") }}
           </RBtn>
+        </p>
+
+        <p v-else-if="loading" class="store__empty" aria-busy="true">
+          {{ t("common.loading-ellipsis") }}
         </p>
 
         <p v-else-if="!entries.length" class="store__empty">
