@@ -90,9 +90,17 @@ def get_plugins(request: Request) -> list[PluginSchema]:
     return list_plugins()
 
 
-@protected_route(router.post, "", [Scope.USERS_WRITE])
+@protected_route(
+    router.post,
+    "",
+    [Scope.USERS_WRITE],
+    responses={
+        status.HTTP_400_BAD_REQUEST: {
+            "description": "The source is not a usable plugin manifest."
+        }
+    },
+)
 def add_plugin(request: Request, body: PluginInstallRequest) -> PluginSchema:
-    _require_admin(request)
     """Install a plugin from a URL, or from a manifest the caller sends.
 
     Args:
@@ -106,6 +114,7 @@ def add_plugin(request: Request, body: PluginInstallRequest) -> PluginSchema:
         HTTPException: The source is not a usable manifest, or one with that
             id is already installed.
     """
+    _require_admin(request)
     try:
         return install_plugin(manifest=body.manifest, url=body.url)
     except PluginRefused as exc:
@@ -114,7 +123,16 @@ def add_plugin(request: Request, body: PluginInstallRequest) -> PluginSchema:
         ) from exc
 
 
-@protected_route(router.get, "/store", [Scope.ROMS_READ])
+@protected_route(
+    router.get,
+    "/store",
+    [Scope.ROMS_READ],
+    responses={
+        status.HTTP_502_BAD_GATEWAY: {
+            "description": "The index could not be fetched or read."
+        }
+    },
+)
 def get_store(request: Request) -> list[StorePluginSchema]:
     """The curated index, so the UI can offer what a repository lists.
 
@@ -135,9 +153,17 @@ def get_store(request: Request) -> list[StorePluginSchema]:
         ) from exc
 
 
-@protected_route(router.post, "/store/{plugin_id}", [Scope.USERS_WRITE])
+@protected_route(
+    router.post,
+    "/store/{plugin_id}",
+    [Scope.USERS_WRITE],
+    responses={
+        status.HTTP_400_BAD_REQUEST: {
+            "description": "The store has no such plugin, or it will not install."
+        }
+    },
+)
 def install_store_plugin(request: Request, plugin_id: str) -> PluginSchema:
-    _require_admin(request)
     """Install a plugin the store lists.
 
     Args:
@@ -150,6 +176,7 @@ def install_store_plugin(request: Request, plugin_id: str) -> PluginSchema:
     Raises:
         HTTPException: The store has no such plugin, or it won't install.
     """
+    _require_admin(request)
     try:
         return install_from_store(plugin_id)
     except PluginRefused as exc:
@@ -185,7 +212,18 @@ def _rom_values(request: Request, rom_id: int) -> dict[str, str]:
     }
 
 
-@protected_route(router.get, "/{plugin_id}/facts", [Scope.ROMS_READ])
+@protected_route(
+    router.get,
+    "/{plugin_id}/facts",
+    [Scope.ROMS_READ],
+    responses={
+        status.HTTP_404_NOT_FOUND: {
+            "description": (
+                "The plugin is not installed, or the caller cannot see the game."
+            )
+        }
+    },
+)
 def get_plugin_facts(
     request: Request, plugin_id: str, rom_id: int
 ) -> PluginFactsSchema:
@@ -218,7 +256,16 @@ def get_plugin_facts(
     )
 
 
-@protected_route(router.get, "/{plugin_id}/options", [Scope.ROMS_READ])
+@protected_route(
+    router.get,
+    "/{plugin_id}/options",
+    [Scope.ROMS_READ],
+    responses={
+        status.HTTP_404_NOT_FOUND: {
+            "description": "The plugin is not installed, or the setting has no source."
+        }
+    },
+)
 def get_plugin_options(
     request: Request,
     plugin_id: str,
@@ -251,7 +298,14 @@ def get_plugin_options(
     return PluginOptionsSchema(options=options, note=note)
 
 
-@protected_route(router.get, "/{plugin_id}/settings", [Scope.ROMS_READ])
+@protected_route(
+    router.get,
+    "/{plugin_id}/settings",
+    [Scope.ROMS_READ],
+    responses={
+        status.HTTP_404_NOT_FOUND: {"description": "The plugin is not installed."}
+    },
+)
 def get_plugin_settings(request: Request, plugin_id: str) -> PluginSettingsSchema:
     """A plugin's current values, with the manifest's defaults filled in.
 
@@ -275,11 +329,20 @@ def get_plugin_settings(request: Request, plugin_id: str) -> PluginSettingsSchem
     return PluginSettingsSchema(values=values)
 
 
-@protected_route(router.put, "/{plugin_id}/settings", [Scope.USERS_WRITE])
+@protected_route(
+    router.put,
+    "/{plugin_id}/settings",
+    [Scope.USERS_WRITE],
+    responses={
+        status.HTTP_400_BAD_REQUEST: {
+            "description": "A key the manifest does not declare, or a value of the wrong type."
+        },
+        status.HTTP_404_NOT_FOUND: {"description": "The plugin is not installed."},
+    },
+)
 def put_plugin_settings(
     request: Request, plugin_id: str, body: PluginSettingsSchema
 ) -> PluginSettingsSchema:
-    _require_admin(request)
     """Save a plugin's settings, validated against its manifest.
 
     Args:
@@ -294,6 +357,7 @@ def put_plugin_settings(
         HTTPException: A key the manifest doesn't declare, or a value of the
             wrong type.
     """
+    _require_admin(request)
     plugin = _installed(plugin_id)
     try:
         stored = save_plugin_settings(plugin, body.values)
@@ -304,9 +368,15 @@ def put_plugin_settings(
     return PluginSettingsSchema(values=stored)
 
 
-@protected_route(router.delete, "/{plugin_id}", [Scope.USERS_WRITE])
+@protected_route(
+    router.delete,
+    "/{plugin_id}",
+    [Scope.USERS_WRITE],
+    responses={
+        status.HTTP_404_NOT_FOUND: {"description": "The plugin is not installed."}
+    },
+)
 def delete_plugin(request: Request, plugin_id: str) -> None:
-    _require_admin(request)
     """Remove an installed plugin.
 
     Args:
@@ -316,6 +386,7 @@ def delete_plugin(request: Request, plugin_id: str) -> None:
     Raises:
         HTTPException: No such plugin, or its folder cannot be removed.
     """
+    _require_admin(request)
     try:
         remove_plugin(plugin_id)
     except PluginRefused as exc:
