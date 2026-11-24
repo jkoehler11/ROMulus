@@ -1,0 +1,117 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.event_name == 'pull_request' && github.event.pull_request.number || github.sha }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
+
+env:
+  # The tests below want a shell and a database, never a network dependency.
+  UV_SYSTEM_PYTHON: "0"
+
+jobs:
+  backend:
+    name: backend (pytest)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    services:
+      mariadb:
+        image: mariadb:13.0.2
+        ports:
+          - 3306
+        env:
+          MYSQL_USER: romm_test
+          MYSQL_PASSWORD: passwd
+          MYSQL_DATABASE: romm_test
+          MYSQL_ROOT_PASSWORD: passwd
+        options: --health-cmd="healthcheck.sh --connect --innodb_initialized" --health-interval=5s --health-timeout=2s --health-retries=3 --health-start-period=30s
+      valkey:
+        image: valkey/valkey:9.0.8
+        ports:
+          - 6379
+        options: --health-cmd="redis-cli ping" --health-interval=5s --health-timeout=2s --health-retries=3
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Set up the backend
+        uses: ./.github/actions/setup-backend
+        with:
+          sync-args: --extra test
+          apt-packages: 7zip
+
+      # The ROM patcher tests run the real patcher.js.
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: frontend/.nvmrc
+      - name: Install the ROM patcher dependencies
+        working-directory: backend/utils/rom_patcher
+        run: npm ci --ignore-scripts --no-audit --no-fund
+
+      - name: Let the test user create its per-worker databases
+        env:
+          MARIADB_PORT: ${{ job.services.mariadb.ports['3306'] }}
+        run: |
+          mysql --host 127.0.0.1 --port "$MARIADB_PORT" -uroot -ppasswd -e "GRANT ALL PRIVILEGES ON \`romm\_test%\`.* TO 'romm_test'@'%' WITH GRANT OPTION; FLUSH PRIVILEGES;"
+
+      - name: Run python tests
+        env:
+          DB_HOST: 127.0.0.1
+          DB_PORT: ${{ job.services.mariadb.ports['3306'] }}
+          ROMM_DB_DRIVER: mariadb
+          REDIS_HOST: 127.0.0.1
+          REDIS_PORT: ${{ job.services.valkey.ports['6379'] }}
+          HYPOTHESIS_PROFILE: ci
+        run: |
+          cd backend
+          uv run pytest -n 4 --maxfail=10 -q .
+
+  mypy:
+    name: backend (mypy)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./.github/actions/setup-backend
+      - run: uv run mypy --config-file .trunk/configs/mypy.ini backend .github/scripts frontend/src/locales
+
+  frontend:
+    name: frontend (vitest, typecheck)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: frontend/.nvmrc
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci --no-audit --no-fund
+        working-directory: frontend
+      - name: Install the browser the a11y tests need
+        run: npx playwright install --only-shell chromium
+        working-directory: frontend
+      - name: Tests
+        run: npm run test
+        working-directory: frontend
+      - name: Typecheck
+        run: npm run typecheck
+        working-directory: frontend
+
+  i18n:
+    name: locales
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v7
+      - run: uv python install
+      - run: uv run --no-project python frontend/src/locales/check_i18n_locales.py
+      - run: uv run --no-project python frontend/src/locales/check_i18n_sorted.py

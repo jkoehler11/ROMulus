@@ -1,0 +1,56 @@
+ROMulus
+=======
+
+ROMulus is a fork of RomM (https://github.com/rommapp/romm), which is licensed
+under the GNU Affero General Public License, version 3 (see LICENSE).
+
+This file records the modification, as section 5 of that licence asks: the
+software has been changed, and the changes are described here and in the
+repository's history.
+
+What the fork adds
+------------------
+A plugin system: a plugin is a manifest on disk ($ROMM_BASE_PATH/plugins/<id>/
+plugin.json) that adds actions which open a URL, and panels that show data an
+external source answers about a game — for example, what emulator runs it well
+on a given handheld. Plugins declare their own settings, which the server
+validates and stores beside the manifest. There is a curated index of plugins
+(jkoehler11/romm-plugins) that an administrator can browse and install from.
+
+No plugin runs code on the server. A plugin can only cause the server to read a
+URL the plugin supplied, and only a public one.
+
+Where the change lives
+----------------------
+The plugin system is additive, so that this fork can keep merging upstream:
+
+  backend/handler/plugin_*.py        manifests, panels, settings, option search
+  backend/endpoints/plugins.py       the plugin routes
+  backend/endpoints/responses/plugin.py
+  backend/utils/context.py           a shared, public-only HTTP client
+  frontend/src/views/Settings/Plugins.vue
+  frontend/src/components/Settings/Plugin*.vue
+  frontend/src/components/shared/PluginSlot.vue
+  docs/PLUGINS.md
+
+Edits to existing files are small and marked by their call sites: the router
+include in backend/main.py, the Play button and action row, the settings
+sidebar, and the i18n bundle.
+
+Continuous integration was replaced as well: RomM's workflows are written for
+RomM's repository and its secrets, so this fork runs .github/workflows/
+romulus-ci.yml and romulus-image.yml instead, and disables the originals in the
+GitHub settings rather than deleting them.
+
+Dates
+-----
+ 2026-11-22  Forked from rommapp/romm at master.
+ 2026-11-24  Plugin system, store, panels, settings and translations.
+
+Upstream
+--------
+Everything else in this repository is RomM's, unchanged, and its copyright
+belongs to the RomM authors. Please report bugs in that code upstream, not here.
+
+The name and logo of ROMulus are not RomM's, and nothing here claims to be
+official RomM.
