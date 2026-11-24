@@ -130,7 +130,11 @@ export function usePluginActions(getRom: () => SimpleRom | null | undefined): {
 
   const actions = computed<PluginAction[]>(() => {
     const rom = getRom() ?? null;
-    return store.plugins.flatMap((plugin) => {
+    // A store whose list is not an array yet has no actions to offer, which is
+    // what a page with no plugins should show: a story that replaces the store
+    // with a stub must not take the page down with it.
+    const plugins = Array.isArray(store.plugins) ? store.plugins : [];
+    return plugins.flatMap((plugin) => {
       const settings = store.settingsFor(plugin.id);
       return plugin.actions
         .filter((action) => offersPlatform(action.platforms ?? [], rom))
