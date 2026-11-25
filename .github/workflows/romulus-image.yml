@@ -45,6 +45,21 @@ jobs:
             type=sha,prefix=,format=short
             type=raw,value=latest,enable={{is_default_branch}}
 
+      # The image prints its own version on boot, from this file. Upstream's
+      # build rewrites it; a fork that does not leaves every release saying
+      # "<version>", which is what 0.1.0 said.
+      - name: Set version
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          if [[ "$TAG" == v* ]]; then
+            VERSION="${TAG#v}"
+          else
+            VERSION="$(git rev-parse --short HEAD)"
+          fi
+          sed -i "s/<version>/$VERSION/" backend/__version__.py
+          cat backend/__version__.py
+
       - uses: docker/build-push-action@v7
         with:
           context: .
