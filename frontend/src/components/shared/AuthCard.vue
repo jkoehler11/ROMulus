@@ -4,7 +4,7 @@
 // and the padded inner column. Views drop their form content into the
 // default slot.
 import { RCard, RImage } from "@/lib";
-import { PRODUCT_NAME } from "@/brand";
+import { PRODUCT_NAME, SOURCE_REPO, SOURCE_REPO_URL } from "@/brand";
 
 defineOptions({ inheritAttrs: false });
 </script>
@@ -19,6 +19,14 @@ defineOptions({ inheritAttrs: false });
         :alt="PRODUCT_NAME"
       />
       <slot />
+      <a
+        class="auth-card__terms"
+        :href="SOURCE_REPO_URL"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        AGPL-3.0 · {{ SOURCE_REPO }}
+      </a>
     </div>
   </RCard>
 </template>
@@ -45,6 +53,20 @@ defineOptions({ inheritAttrs: false });
   display: flex;
   flex-direction: column;
   gap: var(--r-space-4);
+}
+
+/* The licence and the source belong on the one screen a visitor sees before
+   signing in: the AGPL asks a network service to offer them its source. */
+.auth-card__terms {
+  align-self: center;
+  color: var(--r-color-fg-muted);
+  font-size: 11px;
+  text-decoration: none;
+}
+.auth-card__terms:hover,
+.auth-card__terms:focus-visible {
+  color: var(--r-color-fg);
+  text-decoration: underline;
 }
 
 .auth-card__logo {

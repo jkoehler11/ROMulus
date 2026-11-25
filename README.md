@@ -2,7 +2,7 @@
 <!-- trunk-ignore(markdownlint/MD041) -->
 > **ROMulus is a fork of RomM with a plugin system.** Everything RomM does, it still does; on top of that, a plugin is a manifest on disk that adds actions and panels — what emulator runs a game well on your handheld, a link that opens a game in another app, a dashboard. Plugins run no code on the server, and a plugin can only ask it to read a public URL.
 >
-> - **Install:** the same Docker images and the same `docker-compose.yml`, with plugins enabled by dropping a folder into `$ROMM_BASE_PATH/plugins/`. See [docs/PLUGINS.md](docs/PLUGINS.md).
+> - **Install:** `ghcr.io/jkoehler11/romulus` with the same `docker-compose.yml` upstream ships, plus a mount for `$ROMM_BASE_PATH/plugins/` so installed plugins survive an update. See [docs/PLUGINS.md](docs/PLUGINS.md).
 > - **The plugin index:** [jkoehler11/romulus-plugins](https://github.com/jkoehler11/romulus-plugins) — browsable from Settings → Plugins → Add plugin → Shop.
 > - **Upstream is [rommapp/romm](https://github.com/rommapp/romm)**, and most of this code is theirs. This fork changes what [NOTICE](NOTICE) lists, and nothing else. Bugs in that code belong upstream.
 > - **Licence:** AGPL-3.0, unchanged. If you run ROMulus as a service for other people, they are entitled to its source, which is this repository.
@@ -19,23 +19,9 @@
   </h3>
 </div>
 
-<div align="center">
-  <div dir="auto">
-    <a href="https://trendshift.io/repositories/14133?utm_source=repository-badge&amp;utm_medium=badge&amp;utm_campaign=badge-repository-14133" target="_blank" rel="noopener noreferrer"><img src=".github/resources/trendshift-badge.svg" alt="Trendshift" width="250" height="58"/></a>
-    <a href="https://news.ycombinator.com/item?id=44247964" target="_blank" rel="noopener noreferrer"><img src=".github/resources/hackernews-badge.svg" width="250px" alt="hackernews badge"></a>
-    <br />
-    <a href="https://selfh.st/survey/2026-results/#favorite-software" target="_blank" rel="noopener noreferrer"><img src=".github/resources/selfhst-badge.svg" width="250px" alt="selfh.st badge"></a>
-    <a href="https://discord.gg/invite/romm" target="_blank" rel="noopener noreferrer"><img src=".github/resources/discord-badge.svg" alt="Discord" width="250" height="58"/></a>
-  </div>
-</div>
-
 # Overview
 
-Scan, enrich, browse and play your ROM collection from one beautiful & free self-hosted app. Metadata from 10+ providers, save sync across your devices, and support for over 400 platforms. RomM is a must-have for anyone who plays on emulators.
-
-<p align="center">
-  <a href="https://demo.romm.app/" target="_blank" rel="noopener noreferrer"><img src=".github/resources/screenshots/preview.gif" alt="Browsing a library and playing a game in RomM" width="1000" /></a>
-</p>
+Scan, enrich, browse and play your ROM collection from one beautiful & free self-hosted app. Metadata from 10+ providers, save sync across your devices, and support for over 400 platforms. ROMulus is a must-have for anyone who plays on emulators.
 
 ## Features
 
@@ -51,26 +37,7 @@ Scan, enrich, browse and play your ROM collection from one beautiful & free self
 
 ## Installation
 
-The easiest way to start is with the [Quick Start Guide][docs-quick-start-guide] in the docs. If you're having trouble with setup, please review the page for [troubleshooting steps][docs-troubleshooting].
-
-Prefer a hosted deploy over wiring up the stack yourself?
-
-<div align="center">
-  <table>
-    <tr>
-      <td align="center">
-        <a href="https://www.hostg.xyz/aff_c?offer_id=815&amp;aff_id=243561&amp;url_id=6779" target="_blank" rel="noopener noreferrer"><img src=".github/resources/hostinger-badge.svg" alt="Deploy on Hostinger" width="250" height="58" /></a>
-        <br />Starting at <b>$6.49/mo</b> · <a href="https://docs.romm.app/latest/install/hostinger/">Setup guide</a>
-      </td>
-      <td align="center">
-        <a href="https://corehost.io/p/romm" target="_blank" rel="noopener noreferrer"><img src=".github/resources/corehost-badge.svg" alt="Deploy on CoreHost" width="250" height="58" /></a>
-        <br />Starting at <b>$2.30/mo</b> · <a href="https://docs.romm.app/latest/install/corehost/">Setup guide</a>
-      </td>
-    </tr>
-  </table>
-</div>
-
-<sub><i>Deployment and infrastructure support for these installs is handled by Hostinger and CoreHost. Prices are indicative and may not reflect current offerings. Both send a share of the revenue back to us, which helps fund the project.</i></sub>
+The app is the same container as upstream's, so the docs apply as they are: start with the [Quick Start Guide][docs-quick-start-guide], and work through the [troubleshooting steps][docs-troubleshooting] if setup misbehaves. Pull `ghcr.io/jkoehler11/romulus` instead of `rommapp/romm` to get this fork, and mount `/romm/plugins` so installed plugins survive an update.
 
 ## Official apps
 
@@ -106,7 +73,7 @@ A lightweight client for your favorite handheld custom firmwares*. Download game
 
 ## Community
 
-Here are some cool projects maintained by members of our community. Please note that our team does not regularly review their source code.
+Third-party clients and tools that talk to the API. They are independent projects: this fork does not maintain them and does not review their source.
 
 ### Mobile and TV
 
@@ -144,26 +111,11 @@ Here are some cool projects maintained by members of our community. Please note 
 - [GGRequestz][ggrequestz]: Game discovery and request tool by [@XTREEMMAK](https://github.com/XTREEMMAK)
 - [romm-comm][romm-comm-discord-bot]: Discord bot by [@idio-sync](https://github.com/idio-sync)
 
-## Support the project
+## Upstream, and its sponsors
 
-Consider supporting this project on Open Collective. Funds cover hosting, development, and maintenance, and we pass some along to community projects to nurture a healthy ecosystem of apps.
-
-<div align="center">
-  <div dir="auto">
-    <a href="https://opencollective.com/romm" target="_blank" rel="noopener noreferrer"><img src=".github/resources/opencollective-badge.svg" alt="Open Collective" width="250" height="58"/></a>
-  </div>
-</div>
-
-## Corporate Sponsors
-
-These companies support us by providing their tools for free:
-
-<div align="center">
-  <div dir="auto">
-    <a href="https://www.greptile.com/?utm_source=oss_badge&amp;utm_medium=readme&amp;utm_campaign=greptile_for_open_source" target="_blank" rel="noopener noreferrer"><img src=".github/resources/greptile-badge.svg" alt="Greptile" width="250" height="58"/></a>
-    <a href="https://socket.dev/" target="_blank" rel="noopener noreferrer"><img src=".github/resources/socket-badge.svg" alt="Socket" width="250" height="58"/></a>
-  </div>
-</div>
+This fork takes RomM's code, docs and community lists as they are. Upstream's own
+funding (Open Collective) and its corporate sponsors are RomM's, not this fork's:
+see [rommapp/romm](https://github.com/rommapp/romm) if you want to support them.
 
 ## Our Friends
 
@@ -186,7 +138,7 @@ Here are a few projects that we think you might like:
 ## Disclaimer
 
 > [!NOTE]
-> RomM is a library manager and player. It does not include, distribute, or link to ROMs, BIOS, firmware, or decryption keys.
+> ROMulus is a library manager and player. It does not include, distribute, or link to ROMs, BIOS, firmware, or decryption keys.
 >
 > - Only use files you have the right to use, such as your own dumps, homebrew, or freeware, and follow the laws where you live.
 > - **The project does not condone piracy.** Requests for or links to copyrighted material are not allowed in any project space.
