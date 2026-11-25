@@ -42,6 +42,40 @@ describe("plugin store", () => {
     expect(getPlugins).toHaveBeenCalledTimes(1);
   });
 
+  // The shell asks as soon as a user is signed in, which on a cold visit is
+  // after the login screen already asked and was refused. Latching that refusal
+  // hid every plugin for the rest of the session.
+  it("retries after a read the server refused", async () => {
+    const store = usePluginStore();
+    getPlugins.mockRejectedValue({ response: { status: 401 } });
+
+    await store.load();
+    expect(store.plugins).toEqual([]);
+
+    getPlugins.mockResolvedValue({ data: [rommdeck] });
+    await store.load();
+
+    expect(store.plugins.map((plugin) => plugin.id)).toEqual(["rommdeck"]);
+  });
+
+  it("asks once while a read is in flight", async () => {
+    const store = usePluginStore();
+
+    await Promise.all([store.load(), store.load(), store.load()]);
+
+    expect(getPlugins).toHaveBeenCalledTimes(1);
+  });
+
+  it("forgets the shelf on a sign-out, so the next user reads their own", async () => {
+    const store = usePluginStore();
+    await store.load();
+
+    store.forget();
+    await store.load();
+
+    expect(getPlugins).toHaveBeenCalledTimes(2);
+  });
+
   it("shows the new plugin after installing one", async () => {
     const store = usePluginStore();
     await store.load();

@@ -43,10 +43,25 @@ onMounted(() => {
   // The plugin shelf is loaded once, by the shell, rather than by every
   // component that shows a plugin action: a page with five such components
   // would ask five times, and a story that mounts one of them would ask at all.
-  // Imported here for the same reason as the router below: a static import
-  // would pull the API client into bootstrap.
-  void import("@/stores/plugins").then(({ usePluginStore }) => {
-    void usePluginStore().load();
+  // It is read when a user is present and never before: the login screen mounts
+  // this shell too, and a read that answered 401 would leave the shelf empty
+  // until the tab was reloaded. Imported here for the same reason as the router
+  // below: a static import would pull the API client into bootstrap.
+  void import("@/stores/plugins").then(async ({ usePluginStore }) => {
+    const { default: storeAuth } = await import("@/stores/auth");
+    const auth = storeAuth();
+    const shelf = usePluginStore();
+    watch(
+      () => auth.user?.id ?? null,
+      (userId) => {
+        if (userId === null) {
+          shelf.forget();
+          return;
+        }
+        void shelf.load();
+      },
+      { immediate: true },
+    );
   });
 });
 

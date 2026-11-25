@@ -22,22 +22,40 @@ export const usePluginStore = defineStore("plugins", () => {
   // these, so they load with the shelf rather than when a form is opened.
   const values = ref<Record<string, Record<string, unknown>>>({});
 
+  // A read in flight is shared: several components ask for the shelf as they
+  // mount, and that is one request, not one each.
+  let pending: Promise<void> | null = null;
+
   async function load(): Promise<void> {
     if (loaded.value) return;
-    await reload();
+    pending ??= reload().finally(() => {
+      pending = null;
+    });
+    await pending;
   }
 
   async function reload(): Promise<void> {
-    loaded.value = true;
     try {
       const listed = (await pluginApi.getPlugins()).data;
       // Anything that is not a list is an answer we cannot read, and a store
       // with no plugins is what that leaves the page with.
       plugins.value = Array.isArray(listed) ? listed : [];
+      loaded.value = true;
     } catch {
+      // A read that failed is not a read: the shell asks before anyone has
+      // signed in, and latching that empty answer would hide every plugin for
+      // the rest of the session. Leave it unloaded so the next ask retries.
       plugins.value = [];
     }
     await loadSettings();
+  }
+
+  /** Forget what was read, for a sign-out: the shelf is instance-wide but the
+   *  saved values belong to the user who was signed in. */
+  function forget(): void {
+    loaded.value = false;
+    plugins.value = [];
+    values.value = {};
   }
 
   /** Every plugin's values. A plugin with none gets its manifest's defaults,
@@ -158,6 +176,7 @@ export const usePluginStore = defineStore("plugins", () => {
     settingsFor,
     load,
     reload,
+    forget,
     install,
     installFromStore,
     loadStore,
