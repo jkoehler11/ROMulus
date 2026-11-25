@@ -21,6 +21,7 @@ from handler.notification_channels.apprise_channel import (
 from handler.notification_channels.messages import OutboundMessage
 from handler.notification_channels.webhook import ERROR_DETAIL_CHARS
 from models.notification import NotificationLevel
+from utils import PRODUCT_NAME
 
 from .fixtures import make_notification
 
@@ -480,15 +481,15 @@ class TestSend:
         [(_, kwargs)] = calls
         assert kwargs["notify_type"] == notify_type
 
-    def test_sends_as_romm_with_its_icon(self, notify):
+    def test_sends_as_the_fork_with_its_icon(self, notify):
         calls = notify()
 
         send("discord", _DISCORD, _message())
 
         [(apprise, _)] = calls
         plugin = apprise[0]
-        assert plugin.app_id == "RomM"
-        assert plugin.image_url(NotifyType.INFO) == apprise_channel.ROMM_ICON_URL
+        assert plugin.app_id == PRODUCT_NAME
+        assert plugin.image_url(NotifyType.INFO) == apprise_channel.APP_ICON_URL
 
     def test_holds_a_service_to_its_own_limits(self, notify):
         calls = notify()

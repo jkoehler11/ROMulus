@@ -250,7 +250,7 @@ def test_export_gamelist_xml_scrap_element(platform_with_roms):
 
     scrap = game.find("scrap")
     assert scrap is not None
-    assert scrap.get("name") == "RomM"
+    assert scrap.get("name") == "ROMulus"
 
 
 @pytest.mark.parametrize("tag", ["thumbnail", "image", "video", "screenshot", "manual"])
@@ -699,7 +699,7 @@ async def test_export_platform_to_file_keeps_unmanaged_tags(
     assert game.get("source") == "ScreenScraper.fr"
     assert [e.text for e in game.findall("name")] == ["Super Mario World"]
     assert [e.text for e in game.findall("desc")] == ["A classic platformer game."]
-    assert [s.get("name") for s in game.findall("scrap")] == ["RomM"]
+    assert [s.get("name") for s in game.findall("scrap")] == ["ROMulus"]
 
     preserved = {
         "favorite": "true",
