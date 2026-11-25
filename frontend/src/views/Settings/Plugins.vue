@@ -39,9 +39,29 @@ const busy = ref(false);
 const saving = ref(false);
 const flash = ref("");
 
+/** The store's catalogue, at the type the browse dialog takes. */
+const catalogue = computed(() => store.store);
+
+/** True while the catalogue is being read, so the dialog can say so. */
+const catalogueLoading = computed(() => Boolean(store.storeLoading));
+
+/** The ids already installed, so the dialog can mark them. */
+const installedIds = computed(() =>
+  (Array.isArray(store.plugins) ? store.plugins : []).map(
+    (plugin) => plugin.id,
+  ),
+);
+
+/** What a manifest looks like, shown in the paste field. */
+const manifestExample = `{
+  "id": "my-plugin",
+  "name": "My plugin",
+  "actions": []
+}`;
+
 const hasSettingsActions = computed(() =>
   store.plugins.some((plugin) =>
-    plugin.actions.some((action) => action.slot === "settings.page"),
+    (plugin.actions ?? []).some((action) => action.slot === "settings.page"),
   ),
 );
 
@@ -310,7 +330,7 @@ onMounted(async () => {
           </li>
         </ul>
 
-        <template v-if="selected.settings.length">
+        <template v-if="(selected.settings ?? []).length">
           <h4 class="plugins-detail__section">
             {{ t("settings.plugins-settings") }}
           </h4>
@@ -446,11 +466,7 @@ onMounted(async () => {
                 class="plugins-add__paste"
                 rows="8"
                 spellcheck="false"
-                :placeholder="{
-                  id: 'my-plugin',
-                  name: 'My plugin',
-                  actions: [],
-                }"
+                :placeholder="manifestExample"
                 :disabled="busy"
               />
             </label>
@@ -476,11 +492,11 @@ onMounted(async () => {
          for a reader who wants to see what is on offer before deciding. -->
     <PluginStoreBrowse
       v-model:open="browsing"
-      :entries="store.store"
-      :installed-ids="store.plugins.map((plugin) => plugin.id)"
+      :entries="catalogue"
+      :installed-ids="installedIds"
       :busy-id="addBusy"
       :problem="storeProblem"
-      :loading="store.storeLoading"
+      :loading="catalogueLoading"
       @install="addFromStore"
       @refresh="openStore(true)"
     />

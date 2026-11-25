@@ -230,7 +230,7 @@ onBeforeUnmount(() => {
           {{ t("settings.plugins-setup-n", { n: index + 1 }) }}
         </span>
         <RBtn
-          variant="bare"
+          variant="plain"
           size="small"
           :disabled="disabled"
           @click="removeEntry(index)"
@@ -250,7 +250,7 @@ onBeforeUnmount(() => {
     </div>
     <RBtn
       v-if="entries.length < (setting.max_items ?? 8)"
-      variant="surface"
+      variant="outlined"
       size="small"
       :disabled="disabled"
       @click="addEntry"

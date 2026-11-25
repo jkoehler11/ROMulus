@@ -50,8 +50,8 @@ const targets = computed<Target[]>(() => {
   for (const action of plugins.playActions.value) {
     list.push({
       key: `${action.pluginId}:${action.id}`,
-      label: action.label,
-      icon: action.icon,
+      label: action.label ?? "",
+      icon: action.icon ?? "",
       action,
     });
   }
@@ -116,7 +116,7 @@ function onPlay(): void {
           v-for="target in targets"
           :key="target.key"
           block
-          variant="surface"
+          variant="outlined"
           class="play-choices__row"
           @click="run(target)"
         >

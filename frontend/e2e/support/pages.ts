@@ -53,6 +53,7 @@ export const PAGES: Record<RouteName, PageDef> = {
   [ROUTES.ADMINISTRATION]: { open: "/administration" },
   [ROUTES.SERVER_STATS]: { open: "/server-stats" },
   [ROUTES.LOGS]: { open: "/logs" },
+  [ROUTES.PLUGINS]: { open: "/plugins" },
   [ROUTES.CONTROLLER_DEBUG]: { open: "/controller-debug" },
 
   [ROUTES.MAIN]: { skip: "the layout around the pages listed here" },

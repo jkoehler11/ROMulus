@@ -126,7 +126,7 @@ interface Props {
   /** Mark the button as opening a choice, with a chevron. */
   chevron?: boolean;
   /** Spoken and hovered name, when the button does more than its preset. */
-  label?: string;
+  label?: string | undefined;
 }
 
 const props = withDefaults(defineProps<Props>(), {

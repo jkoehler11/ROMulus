@@ -158,7 +158,9 @@ describe("GameActionsList: playing", () => {
 
   it("offers Play when the row has no button of its own", () => {
     // A gallery row's menu is its only way to start a game.
-    const shown = labels(mountList({ canPlayLocally: true }, undefined, undefined, true).valueOf());
+    const shown = labels(
+      mountList({ canPlayLocally: true }, undefined, undefined, true),
+    );
     expect(shown).toContain("play.play-in-browser");
   });
 

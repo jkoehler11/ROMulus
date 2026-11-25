@@ -135,7 +135,7 @@ export function usePluginActions(getRom: () => SimpleRom | null | undefined): {
     const plugins = Array.isArray(store.plugins) ? store.plugins : [];
     return plugins.flatMap((plugin) => {
       const settings = store.settingsFor(plugin.id);
-      return plugin.actions
+      return (plugin.actions ?? [])
         .filter((action) => offersPlatform(action.platforms ?? [], rom))
         .filter((action) => gateOpen(action.enabled_by, settings))
         .map((action) => ({

@@ -82,7 +82,7 @@ const RATING_ORDER = [
  *  read down. */
 function columns(fact: PluginFactSchema): string[] {
   const seen = new Set<string>();
-  for (const group of topGroups(fact)) {
+  for (const group of topGroups(fact) ?? []) {
     for (const rating of Object.keys(group.counts ?? {})) seen.add(rating);
   }
   return [...seen].sort(
@@ -142,7 +142,7 @@ function orderedRatings(
           :alt="action.label"
           class="plugin-slot__logo"
         />
-        <RIcon v-else :icon="action.icon" />
+        <RIcon v-else :icon="action.icon ?? undefined" />
         <span>{{ action.label }}</span>
       </a>
     </li>
@@ -164,7 +164,7 @@ function orderedRatings(
         :alt="action.label"
         class="r-game-btn__img"
       />
-      <RIcon v-else :icon="action.icon" />
+      <RIcon v-else :icon="action.icon ?? undefined" />
 
       <!-- The button opens a report, so hovering it says what the report
            says: the emulators, their ratings, and what a click does. -->
