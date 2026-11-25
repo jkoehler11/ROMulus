@@ -1,9 +1,9 @@
 ---
 name: frontend-patterns
-description: Cross-cutting feature patterns for the RomM v2 frontend: error/snackbar handling, loading & skeleton states, real-time Socket.IO updates, UI state persistence (URL vs localStorage vs ephemeral), pagination/infinite scroll, forms & validation, permissions (useCan), and destructive confirmations. Use when wiring up a v2 feature's behavior (not just its markup). Trigger when implementing data flows, dialogs, forms, toggles, or permission gating under frontend/src/.
+description: Cross-cutting feature patterns for the ROMulus v2 frontend: error/snackbar handling, loading & skeleton states, real-time Socket.IO updates, UI state persistence (URL vs localStorage vs ephemeral), pagination/infinite scroll, forms & validation, permissions (useCan), and destructive confirmations. Use when wiring up a v2 feature's behavior (not just its markup). Trigger when implementing data flows, dialogs, forms, toggles, or permission gating under frontend/src/.
 ---
 
-# RomM v2: Architecture Patterns
+# ROMulus v2: Architecture Patterns
 
 How v2 features behave. Each pattern has one canonical mechanism; don't invent a parallel one.
 

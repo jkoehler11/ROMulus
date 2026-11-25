@@ -5,8 +5,8 @@ title: "[Bug] Bug title"
 assignees: ""
 ---
 
-**RomM version**
-Version of RomM you are using
+**ROMulus version**
+Version of ROMulus you are using
 
 **Describe the bug**
 A clear and concise description of what the bug is.

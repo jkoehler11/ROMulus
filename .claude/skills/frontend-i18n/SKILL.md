@@ -1,9 +1,9 @@
 ---
 name: frontend-i18n
-description: Internationalization for the RomM frontend. Use whenever adding, renaming, or removing any user-visible string / translation key under frontend/src/locales/. Covers the en_US-is-source rule, the requirement to add every new key to ALL locale directories in the same change, namespace layout, and the check_i18n_locales.py validator enforced in CI. Trigger on any change to frontend/src/locales/**.
+description: Internationalization for the ROMulus frontend. Use whenever adding, renaming, or removing any user-visible string / translation key under frontend/src/locales/. Covers the en_US-is-source rule, the requirement to add every new key to ALL locale directories in the same change, namespace layout, and the check_i18n_locales.py validator enforced in CI. Trigger on any change to frontend/src/locales/**.
 ---
 
-# RomM Frontend: i18n / Localization
+# ROMulus Frontend: i18n / Localization
 
 User-visible strings are **never hard-coded** in components; they come from locale files via `vue-i18n` (`$t(...)` in templates/composites; utils may call `i18n.global.t(...)`; **v2 lib primitives must not call `$t` at all**, text passes via props/slots).
 

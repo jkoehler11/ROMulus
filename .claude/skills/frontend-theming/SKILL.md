@@ -1,9 +1,9 @@
 ---
 name: frontend-theming
-description: Theming, design tokens, colors, and visual language in the RomM v2 frontend. Use when styling v2 components, picking colors, adding/using CSS variables, working with light/dark themes, or whenever you'd reach for a hex/rgba literal. Covers the token pipeline (src/tokens/index.ts → build:tokens → tokens.css), the .r-app scope classes, the zero-hex-literal policy, and shared state semantics. Trigger on any color/theme/token work under frontend/src/.
+description: Theming, design tokens, colors, and visual language in the ROMulus v2 frontend. Use when styling v2 components, picking colors, adding/using CSS variables, working with light/dark themes, or whenever you'd reach for a hex/rgba literal. Covers the token pipeline (src/tokens/index.ts → build:tokens → tokens.css), the .r-app scope classes, the zero-hex-literal policy, and shared state semantics. Trigger on any color/theme/token work under frontend/src/.
 ---
 
-# RomM v2: Tokens, Theming & Visual Language
+# ROMulus v2: Tokens, Theming & Visual Language
 
 **Tokens are the only source of truth for theming. Zero hex/`rgba()` literals in v2 components.** If a value is missing, add a token. Every component must work in both `r-dark` and `r-light`.
 

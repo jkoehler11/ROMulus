@@ -1,6 +1,6 @@
-# RomM Frontend Architecture
+# ROMulus Frontend Architecture
 
-A map of the RomM frontend (`frontend/`): a Vue 3 single-page app that talks to the backend over `/api/*` (REST) and `/ws` (Socket.IO). This document says where things live and how they fit together. The detailed rules for writing UI code live in the skills under `.claude/skills/` (`frontend-components`, `frontend-theming`, `frontend-input`, `frontend-patterns`, `frontend-i18n`), and commands are in `frontend/AGENTS.md`.
+A map of the ROMulus frontend (`frontend/`): a Vue 3 single-page app that talks to the backend over `/api/*` (REST) and `/ws` (Socket.IO). This document says where things live and how they fit together. The detailed rules for writing UI code live in the skills under `.claude/skills/` (`frontend-components`, `frontend-theming`, `frontend-input`, `frontend-patterns`, `frontend-i18n`), and commands are in `frontend/AGENTS.md`.
 
 ## Contents
 

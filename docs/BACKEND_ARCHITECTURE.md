@@ -1,6 +1,6 @@
-# RomM Backend Architecture
+# ROMulus Backend Architecture
 
-How the RomM backend fits together: its layers, request flow, auth model, scanning, real-time channels and background work.
+How the ROMulus backend fits together: its layers, request flow, auth model, scanning, real-time channels and background work.
 
 This document describes design and rules that change slowly. Facts that change with most pull requests live in the code, which is their only source:
 
@@ -48,7 +48,7 @@ This document describes design and rules that change slowly. Facts that change w
 | **Auth**        | Session, Basic, OAuth2 bearer, OIDC, client tokens |
 | **ASGI Server** | Uvicorn / Gunicorn                                 |
 
-RomM's backend is responsible for:
+ROMulus's backend is responsible for:
 
 - **Library scanning**: detecting platforms and ROMs from the filesystem
 - **Metadata enrichment**: pulling game info from 10+ external providers
@@ -355,7 +355,7 @@ Files under `/assets/romm/resources/` are served by nginx without auth and are o
 
 ### 7.1 Scanning (`handler/scan_handler.py`, `handler/scan/`)
 
-The core of RomM. Orchestrates library scanning and metadata enrichment. The scan types, metadata sources and rescan rules live in `handler/scan/sources.py`, the per-source lookups in `handler/scan/lookups.py`, and the merge of their answers into a rom's columns in `handler/scan/merge.py`.
+The core of ROMulus. Orchestrates library scanning and metadata enrichment. The scan types, metadata sources and rescan rules live in `handler/scan/sources.py`, the per-source lookups in `handler/scan/lookups.py`, and the merge of their answers into a rom's columns in `handler/scan/merge.py`.
 
 | Type            | Behavior                                                                                  |
 | --------------- | ----------------------------------------------------------------------------------------- |
@@ -391,7 +391,7 @@ One `db_*_handler` per entity family owns its queries and writes: filtering and 
 
 ### 7.3 Metadata Handlers (`handler/metadata/`)
 
-One handler per provider normalizes its answers into RomM's fields. Sources are queried in the priority order set in `config.yml` (`scan.priority`); the first match wins for each field, and manual overrides take precedence over all of them.
+One handler per provider normalizes its answers into ROMulus's fields. Sources are queried in the priority order set in `config.yml` (`scan.priority`); the first match wins for each field, and manual overrides take precedence over all of them.
 
 ### 7.4 Filesystem Handlers (`handler/filesystem/`)
 
@@ -427,7 +427,7 @@ Clients opt into snapshots by pushing to `/api/snapshots`; a slotted upload thro
 A minimal WebDAV surface for RetroArch's Cloud Sync driver, which diffs a JSON
 manifest of `{path, hash}` entries instead of listing collections. Point
 RetroArch's WebDAV URL at `https://<host>/api/sync/retroarch/` (trailing slash
-required) and authenticate with a RomM username and password over HTTP Basic.
+required) and authenticate with a ROMulus username and password over HTTP Basic.
 Saves and states live under `saves/` and `states/`; `config/`, `thumbnails/` and
 `system/` are opaque blobs.
 
@@ -502,7 +502,7 @@ await notify_admins("custom", NotificationLevel.WARNING, title="Disk almost full
 
 A `NotificationKind` is translated by the client from `data`; a new one needs a describer in `frontend/src/utils/notifications.ts` and locale keys. Until then, or for a one-off, pass any other kind with `title`/`body`/`link`/`icon`. Both helpers log and swallow failures, so a job never fails over reporting itself.
 
-A client may send its own notification through `POST /api/notifications`, carrying `title`, `body`, `icon` (`mdi-*`) and `link`, which must be a path inside RomM. RomM's own `kind`s are reserved; any other (`custom`, `argosy.sync_done`) is shown as sent.
+A client may send its own notification through `POST /api/notifications`, carrying `title`, `body`, `icon` (`mdi-*`) and `link`, which must be a path inside ROMulus. ROMulus's own `kind`s are reserved; any other (`custom`, `argosy.sync_done`) is shown as sent.
 
 A task reports its success from `run_task_by_name`. Its failure is reported by `report_task_failure`, an exception handler `RomMWorker` installs, so a timeout, a killed work horse or a dead worker notifies too, for cron runs as well as manual ones. The handler can run in the worker parent, so it enqueues `notify_task_failure` on the default queue rather than loading the notification stack there.
 
@@ -511,7 +511,7 @@ A task reports its success from `run_task_by_name`. Its failure is reported by `
 Each user forwards their own notifications to other services. A channel is one of three types:
 
 - `apprise`: any of the 100+ services [Apprise](https://github.com/caronc/apprise#supported-notifications) reaches, set up through that service's own fields. **Admins only**, since Apprise opens its own connections, past the SSRF guard. The owner's role is checked again at every delivery, so a demoted admin's channel fails until it turns off.
-- `webhook`: RomM's own JSON payload (below), POSTed to an http(s) URL.
+- `webhook`: ROMulus's own JSON payload (below), POSTed to an http(s) URL.
 - `email`: a plain-text email over the server's SMTP, to an address confirmed with a 6-digit code first.
 
 A channel filters by minimum level and by topic (`scans`, `tasks`, `streaming`, `account`, `custom`); every stored notification that passes goes out in its own RQ job, retried at 30 s, 2 min and 10 min. A channel that fails 10 deliveries in a row turns itself off and tells its owner.
@@ -541,7 +541,7 @@ With a secret, a webhook adds `X-RomM-Signature: sha256=<hex HMAC-SHA256 of the 
 
 ## 8. External Integrations (Adapters)
 
-`adapters/services/` holds one HTTP client per external service (IGDB, MobyGames, ScreenScraper, SteamGridDB, RetroAchievements and others), each wrapping that provider's auth, rate limits and response types. The matching handler in `handler/metadata/` turns its answers into RomM's fields. A provider is active when its keys are set or its `*_API_ENABLED` toggle is on (see `env.template`).
+`adapters/services/` holds one HTTP client per external service (IGDB, MobyGames, ScreenScraper, SteamGridDB, RetroAchievements and others), each wrapping that provider's auth, rate limits and response types. The matching handler in `handler/metadata/` turns its answers into ROMulus's fields. A provider is active when its keys are set or its `*_API_ENABLED` toggle is on (see `env.template`).
 
 Static indexes (MAME, ScummVM, console serial codes, known BIOS hashes) ship as JSON fixtures under `handler/metadata/fixtures/` and `models/fixtures/` and are loaded into Redis at startup.
 
@@ -757,7 +757,7 @@ Redis holds login sessions, one-time token JTIs, socket and device presence sets
 
 **Errors.** Domain exceptions live in `exceptions/`, grouped by area (auth, config, database, endpoint, filesystem, socket, task). A hidden entity raises the same not-found exception as a missing one.
 
-**Logging.** The `romm` logger writes `[LEVEL]: [RomM][module] [timestamp] message`, at the level `LOGLEVEL` sets. `FORCE_COLOR` and `NO_COLOR` control ANSI colors. Sentry is enabled by `SENTRY_DSN`, with releases tagged `romm@{version}`.
+**Logging.** The `romm` logger writes `[LEVEL]: [ROMulus][module] [timestamp] message`, at the level `LOGLEVEL` sets. `FORCE_COLOR` and `NO_COLOR` control ANSI colors. Sentry is enabled by `SENTRY_DSN`, with releases tagged `romm@{version}`.
 
 ---
 

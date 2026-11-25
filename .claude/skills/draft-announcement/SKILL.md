@@ -1,13 +1,13 @@
 ---
 name: draft-announcement
-description: Draft the Discord release announcement for a RomM release, from the release notes plus an interview about community news. Use when asked to "write the Discord announcement for 5.3.0", "draft the announcement post", "announce the beta in Discord", or to refresh an announcement draft. Interviews the user for the things no diff contains (new team members, third-party apps to spotlight, milestones, events, Discord housekeeping), writes in the house voice, and never posts to Discord.
+description: Draft the Discord release announcement for a ROMulus release, from the release notes plus an interview about community news. Use when asked to "write the Discord announcement for 5.3.0", "draft the announcement post", "announce the beta in Discord", or to refresh an announcement draft. Interviews the user for the things no diff contains (new team members, third-party apps to spotlight, milestones, events, Discord housekeeping), writes in the house voice, and never posts to Discord.
 argument-hint: "[version to announce, e.g. 5.3.0 | nothing to infer it]"
 ---
 
 # Drafting a Discord announcement
 
 The release notes say what shipped. The announcement says why anyone should care,
-in RomM's voice, in one Discord message. It is a short, warm, slightly unhinged
+in ROMulus's voice, in one Discord message. It is a short, warm, slightly unhinged
 post: a hook, the few features worth naming, the community news, a pointer to the
 notes, a sign-off.
 

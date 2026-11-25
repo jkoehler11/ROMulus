@@ -1,9 +1,9 @@
 ---
 name: frontend-components
-description: Building or modifying components in the RomM v2 frontend (frontend/src/). Use when creating/editing v2 primitives (R* components in src/lib/), shared composites, or feature composites. Covers the three-tier model, file/folder conventions, SFC structure, import order, barrels, Storybook requirements, and v2 anti-patterns. Trigger on any work under frontend/src/.
+description: Building or modifying components in the ROMulus v2 frontend (frontend/src/). Use when creating/editing v2 primitives (R* components in src/lib/), shared composites, or feature composites. Covers the three-tier model, file/folder conventions, SFC structure, import order, barrels, Storybook requirements, and v2 anti-patterns. Trigger on any work under frontend/src/.
 ---
 
-# RomM Frontend v2: Component Constitution
+# ROMulus Frontend v2: Component Constitution
 
 This governs work inside `frontend/src/`. The legacy v1 UI and console mode have been removed; v2 is the only UI.
 

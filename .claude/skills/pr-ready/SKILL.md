@@ -7,7 +7,7 @@ disable-model-invocation: true
 
 # PR-ready gauntlet
 
-Run the review passes RomM applies to every non-trivial PR over one fixed
+Run the review passes ROMulus applies to every non-trivial PR over one fixed
 range. They run in parallel and land in this order. Do not skip a step or
 reorder the commits.
 
@@ -166,7 +166,7 @@ text), and lint or type directives (`# noqa`, `# type: ignore`,
 the PR description in the summary, keeping the AI disclosure and what
 `review-polish` §F requires.
 
-RomM rules win: rewritten text still meets `review-polish` §A, and a file's
+ROMulus rules win: rewritten text still meets `review-polish` §A, and a file's
 existing headings and bold labels stay (skip "Bold as decoration" and
 "Decorative headings" there). Then run `trunk fmt && trunk check` on the files
 it touched.

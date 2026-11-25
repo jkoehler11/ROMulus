@@ -1,12 +1,12 @@
 # Plugins
 
-A plugin adds actions to RomM's game screen: one more button next to Play and Download, pointing at a URL of your choosing. That is enough to reach anything that speaks a URL, a desktop client on your own machine, a launcher, a companion app, a script behind a local web server.
+A plugin adds actions to ROMulus's game screen: one more button next to Play and Download, pointing at a URL of your choosing. That is enough to reach anything that speaks a URL, a desktop client on your own machine, a launcher, a companion app, a script behind a local web server.
 
 Plugins are declarative. A manifest describes buttons, and nothing in a plugin folder runs on the server, so installing one cannot reach your library, your database or your credentials. The button opens a URL in the browser, and the browser hands a custom scheme to whatever handles it on that machine.
 
 ## Installing one
 
-Two ways, and neither involves editing RomM:
+Two ways, and neither involves editing ROMulus:
 
 - **Settings → Plugins → Add plugin.** Paste a URL to a `plugin.json` and the server fetches it, or paste the manifest body itself. The manifest is validated before it is written, so an install cannot store something the reader would then refuse, and a URL is only fetched over http(s) and only up to the manifest size limit.
 - **Drop it on the shelf.** Copy the folder into the plugins directory. This is the option for a manifest kept beside the library, and for a server with no browser session to spare.
@@ -90,12 +90,12 @@ The shelf is read on every request and cached until a manifest changes, so a fol
 
 ### Slots
 
-A slot is one place in RomM that renders whatever plugins declare for it, so the same manifest can put a button on a game, an entry in the Play menu, or a link in Settings:
+A slot is one place in ROMulus that renders whatever plugins declare for it, so the same manifest can put a button on a game, an entry in the Play menu, or a link in Settings:
 
 | Slot            | Where it lands                                                        |
 | --------------- | --------------------------------------------------------------------- |
 | `game.details`  | The action row on a game, beside Play and Download. The default.      |
-| `game.play`     | A way to start the game, offered in the Play menu next to RomM's own. |
+| `game.play`     | A way to start the game, offered in the Play menu next to ROMulus's own. |
 | `app.nav`       | An entry in the Settings navigation.                                  |
 | `settings.page` | A row on Settings, Plugins.                                           |
 
@@ -143,7 +143,7 @@ saved by an older version is dropped when the manifest stops describing it.
 #### Searchable lists
 
 A `search` field holds an id from a list only the plugin's own source knows, so
-RomM asks that source as the user types and shows what comes back. The list is
+ROMulus asks that source as the user types and shows what comes back. The list is
 fetched on the server, through the same guard as everything else a manifest
 names, and the address must be public.
 
@@ -216,7 +216,7 @@ A URL may interpolate the game the button was pressed on. Values are URL-encoded
 
 | Placeholder       | Value                                                               |
 | ----------------- | ------------------------------------------------------------------- |
-| `{rom_id}`        | RomM's id for the game.                                             |
+| `{rom_id}`        | ROMulus's id for the game.                                             |
 | `{rom_name}`      | The game's display name.                                            |
 | `{platform_slug}` | The platform's slug, e.g. `ngc`.                                    |
 | `{platform_name}` | The platform's display name.                                        |
@@ -226,7 +226,7 @@ Any other placeholder is refused, so a manifest cannot ask for values the UI doe
 
 ## Panels
 
-A panel is a block of numbers a plugin fills from its own source and RomM draws
+A panel is a block of numbers a plugin fills from its own source and ROMulus draws
 under the game. The manifest names the address, the path to the list in the
 answer, and the two fields to count by.
 
@@ -286,4 +286,4 @@ The UI reads the shelf when a game page opens and keeps it for the session, so a
 
 ## Example: RommDeck
 
-[RommDeck](https://github.com/s0liton/RommDeck) downloads and syncs your RomM library to a machine with the emulators, and keeps your saves in step. Its plugin lives in its own repository, [rommdeck-plugin](https://github.com/jkoehler11/rommdeck-plugin), and adds a way to start a game from the Play chooser by handing it to a `rommdeck://` handler on the machine running RommDeck. A plugin is a manifest, so it is not part of RomM's source: install it from Settings, Plugins, or drop the folder on the shelf.
+[RommDeck](https://github.com/s0liton/RommDeck) downloads and syncs your ROMulus library to a machine with the emulators, and keeps your saves in step. Its plugin lives in its own repository, [rommdeck-plugin](https://github.com/jkoehler11/rommdeck-plugin), and adds a way to start a game from the Play chooser by handing it to a `rommdeck://` handler on the machine running RommDeck. A plugin is a manifest, so it is not part of RomM's source: install it from Settings, Plugins, or drop the folder on the shelf.

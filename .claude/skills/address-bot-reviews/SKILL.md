@@ -1,13 +1,13 @@
 ---
 name: address-bot-reviews
-description: Work through the Greptile and Copilot review comments on a RomM PR. Triage each finding (valid, introduced by this PR, consistent with what the PR intends), fix the ones that hold up, then reply on every thread with the fix or the reason for declining and resolve it. Use after the review bots have commented on an open PR.
+description: Work through the Greptile and Copilot review comments on a ROMulus PR. Triage each finding (valid, introduced by this PR, consistent with what the PR intends), fix the ones that hold up, then reply on every thread with the fix or the reason for declining and resolve it. Use after the review bots have commented on an open PR.
 argument-hint: "[PR number | nothing for the current branch's PR]"
 disable-model-invocation: true
 ---
 
 # Address bot reviews
 
-Greptile and Copilot review every RomM PR. Their findings are leads, not orders:
+Greptile and Copilot review every ROMulus PR. Their findings are leads, not orders:
 some are real bugs, some misread the framework, some flag code the PR never
 touched. This skill turns their threads into fixes or reasoned replies, then
 closes them, so a human reviewer opens a PR with no bot noise left.

@@ -1,9 +1,9 @@
 ---
 name: review-polish
-description: "The before-review and before-handoff pass for RomM, covering both stacks. First shapes the code the checks can't see: comment and docstring discipline (the single most-corrected thing in this repo), duplicated constants/types/getters, imprecise names, loose typing in tests. Then runs the verification gate that keeps CI green: frontend (typecheck/lint/test/build/i18n/tokens), backend (pytest/alembic/trunk), the OpenAPI regen step, and (for UI) manual browser/theme/input/Storybook checks. Ends with what the PR description owes a reviewer: screenshots of a UI change, a mermaid diagram of an architectural one. Use after the code works, right before committing, opening a PR, or telling the user a change is done."
+description: "The before-review and before-handoff pass for ROMulus, covering both stacks. First shapes the code the checks can't see: comment and docstring discipline (the single most-corrected thing in this repo), duplicated constants/types/getters, imprecise names, loose typing in tests. Then runs the verification gate that keeps CI green: frontend (typecheck/lint/test/build/i18n/tokens), backend (pytest/alembic/trunk), the OpenAPI regen step, and (for UI) manual browser/theme/input/Storybook checks. Ends with what the PR description owes a reviewer: screenshots of a UI change, a mermaid diagram of an architectural one. Use after the code works, right before committing, opening a PR, or telling the user a change is done."
 ---
 
-# RomM: Review Polish & Verification
+# ROMulus: Review Polish & Verification
 
 Two passes, in order, once the change works:
 
@@ -47,7 +47,7 @@ more lines of prose, you are explaining, not commenting.
 - **Comparisons to the alternative you didn't pick.** "VueUse's `useMounted` is
   not a substitute because ...", "not worth rewriting".
 - **The product name as the actor.** Write "before unfetched media paths were
-  cleared", not "before RomM cleared unfetched media paths".
+  cleared", not "before ROMulus cleared unfetched media paths".
 
 **Keep** the one non-obvious fact a reader cannot recover from the code: a
 provider's undocumented behaviour, a cross-file invariant, a deliberate

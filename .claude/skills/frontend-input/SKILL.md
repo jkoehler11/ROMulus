@@ -1,9 +1,9 @@
 ---
 name: frontend-input
-description: Universal input (mouse, touch, keyboard, gamepad) and responsive/universal-viewport layout in the RomM v2 frontend. Use when adding interactive v2 components, focus management, spatial navigation, gamepad/keyboard handling, modality-gated focus rings, breakpoints, or responsive layout. Covers useGamepad, useSpatialNav, useGridNav, the escape stack, useInputModality, useBreakpoint, and the data-bp/data-input attributes. Trigger on interactive or responsive work under frontend/src/.
+description: Universal input (mouse, touch, keyboard, gamepad) and responsive/universal-viewport layout in the ROMulus v2 frontend. Use when adding interactive v2 components, focus management, spatial navigation, gamepad/keyboard handling, modality-gated focus rings, breakpoints, or responsive layout. Covers useGamepad, useSpatialNav, useGridNav, the escape stack, useInputModality, useBreakpoint, and the data-bp/data-input attributes. Trigger on interactive or responsive work under frontend/src/.
 ---
 
-# RomM v2: Universal Input & Universal Viewport
+# ROMulus v2: Universal Input & Universal Viewport
 
 **Premise:** all v2 UI works with mouse, touch, keyboard, **and** gamepad; and every surface reads cleanly from a 320px phone to a 4K display. Both mechanisms are fixed; don't invent a parallel one.
 
@@ -75,4 +75,4 @@ Only push an entry with a `panel`: while a panel-less entry is on top, spatial n
 - **Label→icon collapse** (the AppNav precedent) is the canonical way to compress chrome; the four primary destinations relocate to `BottomNav` on `sm-and-down`.
 - **Grids** size via `useResponsiveColumns` (ResizeObserver), never a fixed column count.
 
-Verification adds a breakpoint sweep; see `review-polish`. In Storybook, use the viewport toolbar presets in `.storybook/rommViewports.ts` (RomM xs/sm/md tiers, Steam Deck for lg, AYN Thor top/bottom screens). A story that needs a tier sets `globals: { viewport: { value: "rommPhoneXs" } }` instead of writing `data-bp` itself. Layout that depends on `html[data-bp~="xs"]` needs a canvas **under 600px** wide (e.g. **390×844 · RomM phone**), not just `useBreakpoint()` switching subtabs at tablet widths.
+Verification adds a breakpoint sweep; see `review-polish`. In Storybook, use the viewport toolbar presets in `.storybook/rommViewports.ts` (ROMulus xs/sm/md tiers, Steam Deck for lg, AYN Thor top/bottom screens). A story that needs a tier sets `globals: { viewport: { value: "rommPhoneXs" } }` instead of writing `data-bp` itself. Layout that depends on `html[data-bp~="xs"]` needs a canvas **under 600px** wide (e.g. **390×844 · ROMulus phone**), not just `useBreakpoint()` switching subtabs at tablet widths.

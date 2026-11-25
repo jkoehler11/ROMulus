@@ -1,9 +1,9 @@
 ---
 name: backend-development
-description: Working on the RomM Python backend (backend/), a FastAPI app with SQLAlchemy 2.1, Alembic, RQ/Redis, and Socket.IO. Use when adding or changing API endpoints, handlers, ORM models, response schemas, metadata-provider adapters, background tasks, database migrations, or backend tests. Covers the layered architecture, conventions, auth/scopes, the OpenAPI→frontend type pipeline, and the uv/pytest/alembic/trunk workflow. Trigger on any work under backend/.
+description: Working on the ROMulus Python backend (backend/), a FastAPI app with SQLAlchemy 2.1, Alembic, RQ/Redis, and Socket.IO. Use when adding or changing API endpoints, handlers, ORM models, response schemas, metadata-provider adapters, background tasks, database migrations, or backend tests. Covers the layered architecture, conventions, auth/scopes, the OpenAPI→frontend type pipeline, and the uv/pytest/alembic/trunk workflow. Trigger on any work under backend/.
 ---
 
-# RomM Backend: FastAPI / SQLAlchemy
+# ROMulus Backend: FastAPI / SQLAlchemy
 
 Python 3.14+, FastAPI, SQLAlchemy 2.1 (MariaDB default; MySQL/PostgreSQL supported), Alembic, Redis + RQ for jobs/cache/sessions, Socket.IO for real-time. Managed with **uv**.
 

@@ -1,6 +1,6 @@
 ---
 name: plain-prose
-description: Make every sentence a reader sees in RomM read on the first pass, without the code open. Catches compression rather than AI tells - clipped conditionals ("Unset, keeps the value"), "X, else Y" chains, dropped subjects ("Only the fields sent change"), label fragments where a sentence belongs ("Exact artist.", "Rom internal id."), slash lists and internal slang. Covers API descriptions, docstrings, comments, en_US UI strings and error messages, over a diff or the whole codebase, with backend/tools/prose_check.py to extract the prose and a Trunk check for the rules a regex can decide. Use before opening a PR, when reviewing reader-facing text, or when asked to clean up wording across an area.
+description: Make every sentence a reader sees in ROMulus read on the first pass, without the code open. Catches compression rather than AI tells - clipped conditionals ("Unset, keeps the value"), "X, else Y" chains, dropped subjects ("Only the fields sent change"), label fragments where a sentence belongs ("Exact artist.", "Rom internal id."), slash lists and internal slang. Covers API descriptions, docstrings, comments, en_US UI strings and error messages, over a diff or the whole codebase, with backend/tools/prose_check.py to extract the prose and a Trunk check for the rules a regex can decide. Use before opening a PR, when reviewing reader-facing text, or when asked to clean up wording across an area.
 ---
 
 # Plain prose

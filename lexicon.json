@@ -15,7 +15,7 @@
     },
     {
       "name": "library",
-      "definition": "The folder tree on disk that RomM scans: one folder per platform, each holding roms and firmware, in one of the supported layouts."
+      "definition": "The folder tree on disk that ROMulus scans: one folder per platform, each holding roms and firmware, in one of the supported layouts."
     },
     {
       "name": "scan",
@@ -35,7 +35,7 @@
     },
     {
       "name": "device",
-      "definition": "A client a user registered (a handheld, a frontend app, RetroArch) that syncs saves and play sessions with RomM, identified by a fingerprint."
+      "definition": "A client a user registered (a handheld, a frontend app, RetroArch) that syncs saves and play sessions with ROMulus, identified by a fingerprint."
     }
   ]
 }
