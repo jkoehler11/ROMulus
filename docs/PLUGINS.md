@@ -32,6 +32,14 @@ services:
       - ./plugins:/romm/plugins
 ```
 
+That mount is the whole of it. An install writes a folder with a `plugin.json`,
+and the values a plugin's settings form collects are stored beside it as
+`settings.json`, so the shelf (and those values) is only as durable as the
+directory behind this mount. The stock `docker-compose.yml` mounts `/romm/library`,
+`/romm/resources`, `/romm/assets` and `/romm/config`; `/romm/plugins` is not one
+of them, and a stack built from it loses every installed plugin when the
+container is recreated for a new image.
+
 The shelf is read on every request and cached until a manifest changes, so a folder dropped in shows up on the next page load. No restart, no scan, no migration. A manifest that fails validation is skipped and logged, and the rest of the shelf still loads. A plugin folder is capped at 32 KiB, eight actions, 64 platform slugs and 64 plugins on the shelf, and a manifest that resolves outside the plugins folder (a symlink to somewhere else on disk) is refused.
 
 ## The manifest
