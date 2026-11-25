@@ -55,10 +55,31 @@ Then start the app and check Settings → Plugins still lists, installs, and fil
 a panel from a real source: a merge that compiles and drops the panel is the
 failure nobody notices.
 
+## Branding survives a merge on its own
+
+The fork names itself ROMulus, and it does that without editing what upstream
+writes, because those files are the ones every release rewrites:
+
+- **UI copy.** `frontend/src/locales/**` stays byte-identical to upstream's. The
+  name is applied as a bundle loads (`frontend/src/brand.ts`), so a translation
+  merge never conflicts and strings upstream adds later are renamed too.
+- **Backend copy.** One constant, `PRODUCT_NAME` in `backend/utils/__init__.py`,
+  used by page titles, email subjects, feed titles, notification senders and the
+  log tag.
+- **Links and assets.** `SOURCE_REPO`/`SOURCE_REPO_URL` in the same frontend
+  module; the About dialog, changelog and update banner read this fork's
+  releases. The mark is `frontend/assets/isotipo.svg` plus the favicon set
+  generated from it.
+
+After a merge, the only branding step is checking that a new surface did not
+arrive with its own asset: grep the merged tree for `rommapp/romm` (links that
+should point at this fork) and for the old logo files under `frontend/assets`.
+
 ## What this fork does not take from upstream
 
 - Changes to the plugin system itself, unless they are good ones.
-- Rebranding of the UI strings, logos or `ROMM_*` names.
+- Upstream's branding of the UI: this fork's name, mark and links stay its
+  own, and the mechanism above is what keeps them.
 - Any change that makes a plugin able to run code on the server or reach a
   private address. That is the security line the whole feature rests on:
   public-only at connect time, an empty allowlist, no redirects, a size cap.

@@ -12,9 +12,9 @@ describe("brandMessage", () => {
   });
 
   it("keeps every plural form of a message", () => {
-    expect(brandMessage("Removing {n} game from RomM | Removed from RomM")).toBe(
-      "Removing {n} game from ROMulus | Removed from ROMulus",
-    );
+    expect(
+      brandMessage("Removing {n} game from RomM | Removed from RomM"),
+    ).toBe("Removing {n} game from ROMulus | Removed from ROMulus");
   });
 
   it("leaves a lowercase host name and a longer word alone", () => {

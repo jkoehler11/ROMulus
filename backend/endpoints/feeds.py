@@ -159,7 +159,6 @@ def platforms_webrcade_feed(request: Request) -> WebrcadeFeedSchema:
         thumbnail=str(
             URLPath("/assets/isotipo.svg").make_absolute_url(request.base_url)
         ),
-        background="https://raw.githubusercontent.com/rommapp/romm/release/.github/resources/screenshots/gallery.png",
         categories=categories,
     )
 

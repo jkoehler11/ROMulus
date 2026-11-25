@@ -97,7 +97,10 @@ describe("AboutDialog", () => {
 
     expect(
       wrapper.findAll(".r-about__tile").map((tile) => tile.attributes("href")),
-    ).toEqual(["https://github.com/jkoehler11/ROMulus/releases", SOURCE_REPO_URL]);
+    ).toEqual([
+      "https://github.com/jkoehler11/ROMulus/releases",
+      SOURCE_REPO_URL,
+    ]);
   });
 
   it("keeps quiet about a value that fits", async () => {

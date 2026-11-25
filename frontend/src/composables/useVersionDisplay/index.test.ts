@@ -38,7 +38,9 @@ describe("useVersionDisplay", () => {
     });
     const { version, href } = useVersionDisplay();
     expect(version.value).toBe("feature/foo");
-    expect(href.value).toBe("https://github.com/jkoehler11/ROMulus/tree/feature/foo");
+    expect(href.value).toBe(
+      "https://github.com/jkoehler11/ROMulus/tree/feature/foo",
+    );
   });
 
   it("ignores GIT_BRANCH on a tagged build even if the backend sent one", () => {
@@ -58,7 +60,9 @@ describe("useVersionDisplay", () => {
     });
     const { version, href } = useVersionDisplay();
     expect(version.value).toBe("nightly-a1b2c3d");
-    expect(href.value).toBe("https://github.com/jkoehler11/ROMulus/commit/a1b2c3d");
+    expect(href.value).toBe(
+      "https://github.com/jkoehler11/ROMulus/commit/a1b2c3d",
+    );
   });
 
   it("encodes URL-reserved characters within a branch segment", () => {
