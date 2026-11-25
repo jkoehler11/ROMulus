@@ -39,6 +39,15 @@ function handleSystemThemeChange(event: MediaQueryListEvent) {
 
 onMounted(() => {
   mediaMatch.addEventListener("change", handleSystemThemeChange);
+
+  // The plugin shelf is loaded once, by the shell, rather than by every
+  // component that shows a plugin action: a page with five such components
+  // would ask five times, and a story that mounts one of them would ask at all.
+  // Imported here for the same reason as the router below: a static import
+  // would pull the API client into bootstrap.
+  void import("@/stores/plugins").then(({ usePluginStore }) => {
+    void usePluginStore().load();
+  });
 });
 
 onUnmounted(() => {

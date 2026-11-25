@@ -18,7 +18,7 @@
 // On phones / small tablets it isn't rendered at all: the navbar UserMenu
 // mirrors the same section IA, so an in-page strip would only duplicate it.
 import { storeToRefs } from "pinia";
-import { computed, onMounted } from "vue";
+import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { useCan } from "@/composables/useCan";
 import PluginSlot from "@/components/shared/PluginSlot.vue";
@@ -42,12 +42,11 @@ const { unreadCount } = storeToRefs(storeNotificationInbox());
 // to a Settings page would otherwise show no plugin links until something else
 // loaded them.
 const pluginStore = usePluginStore();
-onMounted(() => void pluginStore.load());
 
 // Named for the template's guard: the group only exists when a plugin put
 // something in the navigation.
 const hasPluginNav = computed(() =>
-  pluginStore.plugins.some((plugin) =>
+  pluginStore.plugins?.some((plugin) =>
     plugin.actions.some((action) => action.slot === "app.nav"),
   ),
 );

@@ -20,9 +20,10 @@ export function usePluginFacts(getRom: () => SimpleRom | null | undefined) {
   // screen, and only once, so a slow source cannot replace a newer report.
   let generation = 0;
 
-  const pluginsWithFacts = computed(() =>
-    store.plugins.filter((plugin) => (plugin.facts ?? []).length > 0),
-  );
+  const pluginsWithFacts = computed(() => {
+    const plugins = Array.isArray(store.plugins) ? store.plugins : [];
+    return plugins.filter((plugin) => (plugin.facts ?? []).length > 0);
+  });
 
   async function load(romId: number): Promise<void> {
     if (askedFor.value === romId) return;

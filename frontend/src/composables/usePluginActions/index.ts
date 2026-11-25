@@ -1,4 +1,4 @@
-import { computed, onMounted, type ComputedRef } from "vue";
+import { computed, type ComputedRef } from "vue";
 import type { PluginActionSchema } from "@/__generated__";
 import { usePluginStore } from "@/stores/plugins";
 import type { SimpleRom } from "@/stores/roms";
@@ -126,7 +126,6 @@ export function usePluginActions(getRom: () => SimpleRom | null | undefined): {
   open: (action: PluginAction) => void;
 } {
   const store = usePluginStore();
-  onMounted(() => void store.load());
 
   const actions = computed<PluginAction[]>(() => {
     const rom = getRom() ?? null;
