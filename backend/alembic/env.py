@@ -12,6 +12,7 @@ from models import load_all_models
 from models.base import BaseModel
 from models.collection import VirtualCollection
 from models.rom import RomMetadata, SiblingRom
+from utils import PRODUCT_NAME
 from utils.database import (
     AUTOGENERATE_EXEMPT_INDEX_NAMES,
     alembic_command_runs_revisions,
@@ -41,13 +42,14 @@ target_metadata = BaseModel.metadata
 
 # Ten revisions install triggers, so a denial blocks the upgrade outright.
 TRIGGER_DDL_DENIED = (
-    "The database user is not allowed to create triggers, which RomM's migrations "
-    "need: MariaDB and MySQL deny trigger statements while binary logging is on and "
-    "the user does not hold SUPER (error 1419). Ask an admin database user to run "
+    "The database user is not allowed to create triggers, which "
+    f"{PRODUCT_NAME}'s migrations need: MariaDB and MySQL deny trigger statements "
+    "while binary logging is on and the user does not hold SUPER (error 1419). Ask "
+    "an admin database user to run "
     "SET GLOBAL log_bin_trust_function_creators = 1, adding it under [mysqld] in "
     "my.cnf so it survives a restart, or to run "
-    "GRANT SUPER ON *.* TO '<romm database user>'@'%', then start RomM again. "
-    "See https://docs.romm.app/latest/install/databases/"
+    "GRANT SUPER ON *.* TO '<romm database user>'@'%', then start "
+    f"{PRODUCT_NAME} again. See https://docs.romm.app/latest/install/databases/"
 )
 
 

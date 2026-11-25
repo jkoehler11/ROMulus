@@ -22,6 +22,7 @@ from apprise.utils.parse import parse_bool
 
 from logger.logger import log
 from models.notification import NotificationLevel
+from utils import PRODUCT_NAME, SOURCE_URL
 
 from .messages import OutboundMessage
 from .webhook import ERROR_DETAIL_CHARS
@@ -93,17 +94,18 @@ NOTIFY_TYPES: Final[dict[str, NotifyType]] = {
 
 # What a service shows as the sender's picture, such as Discord's avatar; it
 # fetches it itself, so it has to be public.
-ROMM_ICON_URL: Final = (
-    "https://raw.githubusercontent.com/rommapp/romm/master/"
+APP_ICON_URL: Final = (
+    "https://raw.githubusercontent.com/jkoehler11/ROMulus/main/"
     "frontend/public/android-chrome-512x512.png"
 )
 
 _ASSET: Final = AppriseAsset(
-    app_id="RomM",
-    app_desc="RomM",
-    app_url="https://romm.app",
-    image_url_mask=ROMM_ICON_URL,
-    image_url_logo=ROMM_ICON_URL,
+    app_id=PRODUCT_NAME,
+    app_desc=PRODUCT_NAME,
+    app_url=SOURCE_URL,
+    image_url_mask=APP_ICON_URL,
+    image_url_logo=APP_ICON_URL,
+
     # Nothing a plugin keeps (tokens, generated keys) is written to disk.
     storage_mode="memory",
     pgp_autogen=False,
@@ -614,9 +616,11 @@ def fields_from_url(url: str) -> tuple[AppriseService, dict[str, FieldValue]]:
         raise ValueError("Paste one URL, without spaces")
     pasted = urlsplit(url)
     if pasted.scheme.lower() in EXCLUDED_SCHEMAS:
-        raise ValueError("RomM doesn't offer that service")
+        raise ValueError(f"{PRODUCT_NAME} doesn't offer that service")
     if {key.lower() for key, _ in parse_qsl(pasted.query)} & FILE_OPTIONS:
-        raise ValueError("RomM doesn't take the options that read local files")
+        raise ValueError(
+            f"{PRODUCT_NAME} doesn't take the options that read local files"
+        )
     try:
         plugin = Apprise.instantiate(url, asset=_ASSET, suppress_exceptions=False)
     except Exception as exc:  # noqa: BLE001 - a plugin says why it refused the URL
@@ -627,7 +631,7 @@ def fields_from_url(url: str) -> tuple[AppriseService, dict[str, FieldValue]]:
     parts = urlsplit(plugin.url(privacy=False))
     service = next((s for s in services() if parts.scheme in s.schemas), None)
     if service is None:
-        raise ValueError("RomM doesn't offer that service")
+        raise ValueError(f"{PRODUCT_NAME} doesn't offer that service")
 
     fields: dict[str, FieldValue] = {}
     base = f"{parts.scheme}://{parts.netloc}{parts.path}".rstrip("/")
@@ -636,7 +640,9 @@ def fields_from_url(url: str) -> tuple[AppriseService, dict[str, FieldValue]]:
         base = f"{parts.scheme}://{parts.netloc}"
     match = next((m for p in service.patterns if (m := p.fullmatch(base))), None)
     if match is None:
-        raise ValueError(f"RomM can't read the {service.name} fields from this URL")
+        raise ValueError(
+            f"{PRODUCT_NAME} can't read the {service.name} fields from this URL"
+        )
 
     for key, text in match.groupdict().items():
         field = service.owners.get(key) or service.field(key)
@@ -657,7 +663,9 @@ def fields_from_url(url: str) -> tuple[AppriseService, dict[str, FieldValue]]:
     if _address(_plugin(service, fields).url(privacy=False)) != _address(
         plugin.url(privacy=False)
     ):
-        raise ValueError(f"RomM can't read the {service.name} fields from this URL")
+        raise ValueError(
+            f"{PRODUCT_NAME} can't read the {service.name} fields from this URL"
+        )
     return service, fields
 
 

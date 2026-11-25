@@ -6,6 +6,7 @@ from typing import Final, overload
 import yarl
 from dotenv import load_dotenv
 
+from utils import PRODUCT_NAME
 from utils.database import safe_int, safe_str_to_bool
 
 load_dotenv()
@@ -310,7 +311,8 @@ def parse_oidc_auth_params(raw: str) -> dict[str, str]:
     reserved = sorted(OIDC_RESERVED_AUTH_PARAMS & params.keys())
     if reserved:
         raise ValueError(
-            f"OIDC_AUTH_PARAMS cannot set {', '.join(reserved)}, RomM manages them"
+            f"OIDC_AUTH_PARAMS cannot set {', '.join(reserved)}, "
+            f"{PRODUCT_NAME} manages them"
         )
     # bool is an int subclass, but "True" is not a value any provider expects
     invalid = sorted(
@@ -518,7 +520,7 @@ YOUTUBE_BASE_URL: Final[str] = _get_env(
 
 # TINFOIL
 TINFOIL_WELCOME_MESSAGE: Final[str] = _get_env(
-    "TINFOIL_WELCOME_MESSAGE", "RomM Switch Library"
+    "TINFOIL_WELCOME_MESSAGE", f"{PRODUCT_NAME} Switch Library"
 )
 
 # EMULATOR STREAMING

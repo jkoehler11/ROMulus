@@ -14,6 +14,7 @@ from models.notification import (
     NotificationKind,
     NotificationLevel,
 )
+from utils import PRODUCT_NAME
 
 from .base import BaseModel, UTCDatetime
 
@@ -73,7 +74,9 @@ class NotificationCreatePayload(BaseModel):
     def _kind_not_reserved(cls, value: str) -> str:
         # Stops a client passing itself off as one of RomM's own events.
         if value != NotificationKind.CUSTOM and value in NotificationKind:
-            raise ValueError(f"'{value}' is reserved for RomM's own notifications")
+            raise ValueError(
+                f"'{value}' is reserved for {PRODUCT_NAME}'s own notifications"
+            )
         return value
 
     @field_validator("title", "body", "link")
@@ -114,7 +117,9 @@ class NotificationCreatePayload(BaseModel):
             or "\\" in value
             or any(char.isspace() for char in value)
         ):
-            raise ValueError("link must be a path inside RomM, such as /rom/12")
+            raise ValueError(
+                f"link must be a path inside {PRODUCT_NAME}, such as /rom/12"
+            )
         return value
 
 

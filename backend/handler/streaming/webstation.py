@@ -40,6 +40,7 @@ from handler.streaming.config import ResolvedContainer
 from handler.streaming.protocol import ACK_TIMEOUT, WebstationProtocol
 from logger.logger import log
 from models.user import User
+from utils import PRODUCT_NAME
 
 
 @dataclass(frozen=True)
@@ -409,7 +410,7 @@ def activate(
             "the webstation broker",
             broker.broker_url(container, path),
             "Check that the container is running and its broker port is "
-            "reachable from the RomM host.",
+            f"reachable from the {PRODUCT_NAME} host.",
         )
 
     resp = resp if isinstance(resp, dict) else {}

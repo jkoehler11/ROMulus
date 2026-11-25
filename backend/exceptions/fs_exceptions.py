@@ -1,7 +1,11 @@
 from logger.formatter import BLUE
 from logger.formatter import highlight as hl
+from utils import PRODUCT_NAME
 
-FOLDER_STRUCT_MSG = "Check RomM folder structure here: https://docs.romm.app/latest/Getting-Started/Folder-Structure/ for more details"
+FOLDER_STRUCT_MSG = (
+    f"Check {PRODUCT_NAME} folder structure here: "
+    "https://docs.romm.app/latest/Getting-Started/Folder-Structure/ for more details"
+)
 
 
 class FolderStructureNotMatchException(Exception):

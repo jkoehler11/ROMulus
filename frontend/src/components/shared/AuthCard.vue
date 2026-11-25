@@ -4,6 +4,7 @@
 // and the padded inner column. Views drop their form content into the
 // default slot.
 import { RCard, RImage } from "@/lib";
+import { PRODUCT_NAME } from "@/brand";
 
 defineOptions({ inheritAttrs: false });
 </script>
@@ -15,7 +16,7 @@ defineOptions({ inheritAttrs: false });
         src="/assets/isotipo.svg"
         :width="80"
         class="auth-card__logo"
-        alt="RomM"
+        :alt="PRODUCT_NAME"
       />
       <slot />
     </div>

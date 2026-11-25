@@ -31,6 +31,7 @@ from exceptions.config_exceptions import ConfigNotWritableException
 from logger.formatter import BLUE
 from logger.formatter import highlight as hl
 from logger.logger import log
+from utils import PRODUCT_NAME
 
 # Macros of a library structure template. `{platform}` is the platform folder and
 # `{game}` is the terminal, marking where the game itself begins.
@@ -1373,7 +1374,7 @@ class ConfigManager:
         if unknown_media:
             log.warning(
                 f"Ignoring unknown values in scan.media: {unknown_media}. "
-                "These may be from a newer RomM version; update to use them."
+                f"These may be from a newer {PRODUCT_NAME} version; update to use them."
             )
             self.config.SCAN_MEDIA = [
                 m for m in self.config.SCAN_MEDIA if m in MetadataMediaType

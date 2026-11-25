@@ -395,7 +395,7 @@ class TestScreenScraperServiceUnit:
                 )
 
         assert exc_info.value.status_code == status.HTTP_403_FORBIDDEN
-        assert "RomM developer credentials" in exc_info.value.detail
+        assert "ROMulus developer credentials" in exc_info.value.detail
 
     @pytest.mark.asyncio
     async def test_request_connection_error(self, service):
@@ -1359,7 +1359,7 @@ class TestScreenScraperServiceEdgeCases:
                 )
 
         assert exc_info.value.status_code == status.HTTP_403_FORBIDDEN
-        assert "RomM developer credentials" in exc_info.value.detail
+        assert "ROMulus developer credentials" in exc_info.value.detail
         assert mock_session.get.call_count == 2
 
 
@@ -1396,7 +1396,7 @@ class TestCredentialErrors:
                 )
 
         assert exc_info.value.credential_set is SSCredentialSet.DEVELOPER
-        assert "RomM developer credentials" in exc_info.value.detail
+        assert "ROMulus developer credentials" in exc_info.value.detail
 
     @pytest.mark.asyncio
     async def test_the_developer_credentials_are_never_named(self, service):
@@ -1529,7 +1529,7 @@ class TestCredentialErrors:
                     )
 
         assert mock_log.error.call_count == 1
-        assert "RomM developer credentials" in _rendered(mock_log.error.call_args)
+        assert "ROMulus developer credentials" in _rendered(mock_log.error.call_args)
 
     @pytest.mark.asyncio
     async def test_a_new_scan_asks_again(self, service):

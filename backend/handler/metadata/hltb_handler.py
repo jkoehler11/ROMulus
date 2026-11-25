@@ -12,6 +12,7 @@ from adapters.services.provider_http import unavailable
 from adapters.services.response_validation import parse_response
 from config import HLTB_API_ENABLED
 from logger.logger import log
+from utils import PRODUCT_NAME
 from utils.arcade_platforms import arcade_fallbacks
 from utils.context import ctx_httpx_client
 from utils.hltb_search import (
@@ -222,7 +223,8 @@ GITHUB_FILE_URL = "https://raw.githubusercontent.com/rommapp/romm/refs/heads/mas
 # Raised where the page parsed but did not carry the shape we read, so a
 # rewrite upstream surfaces as itself instead of as a game with no times.
 HLTB_FORMAT_CHANGED_DETAIL: Final[str] = (
-    "HowLongToBeat changed their game page, RomM could not read the game data"
+    "HowLongToBeat changed their game page, "
+    f"{PRODUCT_NAME} could not read the game data"
 )
 
 
@@ -246,7 +248,7 @@ def _unavailable_detail(status_code: int) -> str:
     if status_code == status.HTTP_404_NOT_FOUND:
         return (
             "HowLongToBeat search endpoint not found, it has likely rotated and "
-            "RomM could not fetch the current one"
+            f"{PRODUCT_NAME} could not fetch the current one"
         )
     return f"HowLongToBeat API returned HTTP {status_code}"
 

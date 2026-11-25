@@ -3,6 +3,7 @@ import mitt from "mitt";
 import { describe, expect, it, vi } from "vitest";
 import { defineComponent, nextTick } from "vue";
 import { RTooltip } from "@/lib";
+import { SOURCE_REPO_URL } from "@/brand";
 import storeHeartbeat from "@/stores/heartbeat";
 import type { Events } from "@/types/emitter";
 import AboutDialog from "./AboutDialog.vue";
@@ -84,6 +85,19 @@ describe("AboutDialog", () => {
     await nextTick();
 
     expect(wrapper.findComponent(RTooltip).props("disabled")).toBe(false);
+  });
+
+  it("offers this fork's homes, and none of upstream's", async () => {
+    const heartbeat = storeHeartbeat();
+    heartbeat.value = {
+      ...heartbeat.value,
+      SYSTEM: { ...heartbeat.value.SYSTEM, VERSION: "0.1.1", GIT_BRANCH: null },
+    };
+    const wrapper = await open();
+
+    expect(
+      wrapper.findAll(".r-about__tile").map((tile) => tile.attributes("href")),
+    ).toEqual(["https://github.com/jkoehler11/ROMulus/releases", SOURCE_REPO_URL]);
   });
 
   it("keeps quiet about a value that fits", async () => {

@@ -28,12 +28,12 @@ const PHOTO_TALL = "https://picsum.photos/seed/romm-tall/300/600";
 // ── Basic ────────────────────────────────────────────────────────────
 
 export const Default: Story = {
-  args: { src: LOGO, width: 80, alt: "RomM logo" },
+  args: { src: LOGO, width: 80, alt: "ROMulus mark" },
 };
 
 export const NaturalSize: Story = {
   name: "Natural size (no width / height)",
-  args: { src: LOGO, alt: "RomM logo" },
+  args: { src: LOGO, alt: "ROMulus mark" },
 };
 
 // ── Sizing ───────────────────────────────────────────────────────────
@@ -255,8 +255,7 @@ export const Logo: Story = {
     components: { RImage },
     template: `
       <div style="display:inline-flex;align-items:center;gap:8px;padding:8px 12px;background:var(--r-color-surface);border-radius:8px">
-        <RImage src="${LOGO}" :width="32" alt="isotipo" />
-        <RImage src="/assets/logotipo.svg" :width="70" alt="logotipo" />
+        <RImage src="${LOGO}" :width="32" alt="ROMulus mark" />
       </div>
     `,
   }),

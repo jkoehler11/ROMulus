@@ -14,6 +14,7 @@ import { useEmitterEvent } from "@/composables/useEmitterEvent";
 import { useFetchState } from "@/composables/useFetchState";
 import { useThemeMode } from "@/composables/useThemeMode";
 import { RBtn, RDialog, REmptyState, RIcon, RSpinner } from "@/lib";
+import { SOURCE_REPO } from "@/brand";
 import { shortenGithubLinks } from "@/utils/githubLinks";
 
 defineOptions({ inheritAttrs: false });
@@ -28,7 +29,7 @@ type Release = {
   draft: boolean;
 };
 
-const REPO = "rommapp/romm";
+const REPO = SOURCE_REPO;
 const RELEASES_URL = `https://api.github.com/repos/${REPO}/releases?per_page=10`;
 const RELEASES_PAGE_URL = `https://github.com/${REPO}/releases`;
 

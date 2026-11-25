@@ -22,6 +22,7 @@ import { useNavDestinations } from "@/composables/useNavDestinations";
 import { useNavGlass } from "@/composables/useNavGlass";
 import { useNavTitle } from "@/composables/useNavTitle";
 import { RSegmentedControl, RImage } from "@/lib";
+import { PRODUCT_NAME } from "@/brand";
 
 defineOptions({ inheritAttrs: false });
 
@@ -59,18 +60,14 @@ const scrolled = computed(
       <router-link to="/" class="r-nav__logo" :aria-label="t('common.home')">
         <RImage
           src="/assets/isotipo.svg"
-          alt="RomM isotipo"
+          alt=""
           aria-hidden="true"
           class="r-nav__logo-mark"
           :width="32"
         />
-        <RImage
-          src="/assets/logotipo.svg"
-          alt="RomM logotipo"
-          aria-hidden="true"
-          class="r-nav__logo-word"
-          :width="70"
-        />
+        <span class="r-nav__logo-word" aria-hidden="true">{{
+          PRODUCT_NAME
+        }}</span>
       </router-link>
 
       <span
@@ -195,9 +192,12 @@ const scrolled = computed(
 }
 
 .r-nav__logo-word {
-  height: 22px;
-  width: auto;
-  display: block;
+  color: var(--r-color-fg-heading);
+  font-size: 19px;
+  font-weight: var(--r-font-weight-bold);
+  letter-spacing: 0.01em;
+  line-height: 1;
+  white-space: nowrap;
 }
 
 .r-nav__center {

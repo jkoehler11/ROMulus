@@ -74,7 +74,7 @@ from handler.middleware.upload_size_middleware import UploadSizeLimitMiddleware
 from handler.socket_handler import netplay_socket_handler, socket_handler
 from handler.streaming.session_store import start_restart_grace
 from logger.formatter import LOGGING_CONFIG
-from utils import get_version
+from utils import PRODUCT_NAME, get_version
 from utils.context import (
     ctx_aiohttp_session,
     ctx_httpx_client,
@@ -133,7 +133,7 @@ before any route, so the routes don't list them:
 """
 
 app = FastAPI(
-    title="RomM API",
+    title=f"{PRODUCT_NAME} API",
     description=API_DESCRIPTION,
     version=get_version(),
     lifespan=lifespan,

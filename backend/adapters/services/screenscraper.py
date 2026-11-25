@@ -35,7 +35,7 @@ from config import (
 )
 from logger.formatter import redact_sensitive
 from logger.logger import log
-from utils import get_version
+from utils import PRODUCT_NAME, get_version
 from utils.context import ctx_aiohttp_session
 from utils.rate_limiter import ConcurrencyLimiter, RateLimiter
 
@@ -133,7 +133,9 @@ CREDENTIAL_DETAILS: Final[dict[SSCredentialSet, str]] = {
         "ScreenScraper rejected your user account credentials. Check "
         "SCREENSCRAPER_USER and SCREENSCRAPER_PASSWORD."
     ),
-    SSCredentialSet.DEVELOPER: "ScreenScraper rejected the RomM developer credentials.",
+    SSCredentialSet.DEVELOPER: (
+        f"ScreenScraper rejected the {PRODUCT_NAME} developer credentials."
+    ),
 }
 
 
@@ -378,7 +380,10 @@ def _handle_client_error(
     elif err.status == 426:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="ScreenScraper has blacklisted this application version. Please update RomM.",
+            detail=(
+                "ScreenScraper has blacklisted this application version. "
+                f"Please update {PRODUCT_NAME}."
+            ),
         ) from err
     elif err.status == 430:
         _count_daily_quota_error(generation)

@@ -38,6 +38,7 @@ from logger.logger import log
 from models.assets import Save, Screenshot, State
 from models.rom import Rom
 from models.user import User
+from utils import PRODUCT_NAME
 from utils.filesystem import check_filename_length, sanitize_filename
 
 router = APIRouter(prefix="/retroarch")
@@ -70,7 +71,7 @@ def _is_game_library_path(file_path: str, include_root: bool = False) -> bool:
 def _unauthorized() -> Response:
     return _empty(
         status.HTTP_401_UNAUTHORIZED,
-        {"WWW-Authenticate": 'Basic realm="RomM Cloud Sync"'},
+        {"WWW-Authenticate": f'Basic realm="{PRODUCT_NAME} Cloud Sync"'},
     )
 
 

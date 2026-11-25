@@ -7,10 +7,10 @@ describe("usePageTitle", () => {
     document.title = "Route title";
   });
 
-  it("follows the source, falling back to RomM while it is empty", async () => {
+  it("follows the source, falling back to ROMulus while it is empty", async () => {
     const name = ref<string | null>(null);
     effectScope().run(() => usePageTitle(() => name.value));
-    expect(document.title).toBe("RomM");
+    expect(document.title).toBe("ROMulus");
 
     name.value = "Chrono Trigger";
     await nextTick();

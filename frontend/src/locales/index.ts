@@ -1,7 +1,8 @@
 import { watch } from "vue";
 import { createI18n } from "vue-i18n";
+import { brandMessages, type MessageTree } from "@/brand";
 
-type LocaleModule = { default: Record<string, string> };
+type LocaleModule = { default: MessageTree };
 
 const FALLBACK_LOCALE = "en_US";
 
@@ -95,12 +96,12 @@ export function loadLocale(locale: string): Promise<void> {
   if (!namespaces) return Promise.resolve();
 
   const loading = (async () => {
-    const messages: Record<string, Record<string, string>> = {};
+    const messages: Record<string, MessageTree> = {};
 
     await Promise.all(
       [...namespaces].map(async ([namespace, load]) => {
         try {
-          messages[namespace] = (await load()).default;
+          messages[namespace] = brandMessages((await load()).default);
         } catch (error) {
           // A namespace that fails to load (a stale chunk after a redeploy)
           // must not hold up the app: the rest of the UI still translates,

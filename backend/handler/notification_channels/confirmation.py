@@ -8,6 +8,7 @@ from typing import Final
 
 from handler.email_handler import send_email
 from handler.redis_handler import as_text, async_cache
+from utils import PRODUCT_NAME
 
 CODE_TTL_SECONDS: Final = 30 * 60
 RESEND_COOLDOWN_SECONDS: Final = 60
@@ -63,10 +64,12 @@ async def issue_code(channel_id: int, user_id: int, address: str) -> None:
         await asyncio.to_thread(
             send_email,
             address,
-            "Your RomM confirmation code",
-            f"Your code is {code}. Enter it in RomM to start getting notifications "
-            f"at this address. It expires in {CODE_TTL_SECONDS // 60} minutes.\n\n"
-            "If you didn't add this address to RomM, you can ignore this email.",
+            f"Your {PRODUCT_NAME} confirmation code",
+            f"Your code is {code}. Enter it in {PRODUCT_NAME} to start getting "
+            f"notifications at this address. It expires in "
+            f"{CODE_TTL_SECONDS // 60} minutes.\n\n"
+            f"If you didn't add this address to {PRODUCT_NAME}, you can ignore this "
+            "email.",
         )
     except Exception:
         await async_cache.delete(_key(channel_id, "code"), *cooldowns)

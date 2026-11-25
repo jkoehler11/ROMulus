@@ -18,6 +18,7 @@ import semver from "semver";
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useUserLocalStorage } from "@/composables/useUserLocalStorage";
+import { SOURCE_REPO } from "@/brand";
 import { RBtn, RIcon } from "@/lib";
 import storeHeartbeat from "@/stores/heartbeat";
 
@@ -46,7 +47,7 @@ function onDismiss() {
 
 function onOpenRelease() {
   window.open(
-    `https://github.com/rommapp/romm/releases/tag/${latestVersion.value}`,
+    `https://github.com/${SOURCE_REPO}/releases/tag/${latestVersion.value}`,
     "_blank",
     "noopener,noreferrer",
   );
@@ -55,7 +56,7 @@ function onOpenRelease() {
 async function fetchLatestVersion() {
   try {
     const response = await fetch(
-      "https://api.github.com/repos/rommapp/romm/releases/latest",
+      `https://api.github.com/repos/${SOURCE_REPO}/releases/latest`,
     );
     const json = await response.json();
     latestVersion.value = json.tag_name;

@@ -16,6 +16,7 @@ from logger.logger import log
 from models.notification import NotificationKind, NotificationLevel, topic_of
 from models.notification_channel import NotificationChannel, NotificationChannelType
 from models.user import Role
+from utils import PRODUCT_NAME
 from utils.secret_box import unseal
 
 from . import webhook
@@ -108,7 +109,10 @@ async def send_to_channel(
             )
         case NotificationChannelType.EMAIL:
             await asyncio.to_thread(
-                send_email, config["address"], f"[RomM] {message.title}", message.text
+                send_email,
+                config["address"],
+                f"[{PRODUCT_NAME}] {message.title}",
+                message.text,
             )
         case _:
             await webhook.send(
@@ -125,7 +129,7 @@ def sample_message() -> OutboundMessage:
             id=0,
             kind=NotificationKind.CUSTOM,
             level=NotificationLevel.INFO,
-            title="Test notification from RomM",
+            title=f"Test notification from {PRODUCT_NAME}",
             body="If you can read this, the channel works.",
             link="/notifications",
             icon=None,

@@ -45,6 +45,7 @@ from logger.formatter import CYAN
 from logger.formatter import highlight as hl
 from logger.log_stream_handler import STDOUT_ONLY
 from logger.logger import log
+from utils import PRODUCT_NAME
 from utils.urls import get_public_base_url
 
 type UserWithClaims = tuple[models.user.User, dict[str, Any]]
@@ -262,8 +263,8 @@ class AuthHandler:
         try:
             send_email(
                 user.email,
-                "Reset your RomM password",
-                f"Someone asked to reset the password of your RomM account, "
+                f"Reset your {PRODUCT_NAME} password",
+                f"Someone asked to reset the password of your {PRODUCT_NAME} account, "
                 f"{user.username}.\n\nChoose a new one within "
                 f"{self.reset_passwd_token_expires_in_minutes} minutes here:\n"
                 f"{base_url}/reset-password?token={token}\n\n"

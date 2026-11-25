@@ -8,8 +8,9 @@
 // The title is deliberately not restored on unmount: the router guard has
 // already set the next route's title by the time a view tears down.
 import { useTitle } from "@vueuse/core";
+import { PRODUCT_NAME } from "@/brand";
 
-export const DEFAULT_TITLE = "RomM";
+export const DEFAULT_TITLE = PRODUCT_NAME;
 
 export function usePageTitle(source: () => string | null | undefined) {
   useTitle(() => source() || DEFAULT_TITLE, { restoreOnUnmount: false });

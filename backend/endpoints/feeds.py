@@ -54,6 +54,7 @@ from models.rom import (
     RomFile,
     RomFileCategory,
 )
+from utils import PRODUCT_NAME
 from utils.archives import is_compressed_file
 from utils.datetime import format_utc
 from utils.platform_slugs import UniversalPlatformSlug as UPS
@@ -151,10 +152,13 @@ def platforms_webrcade_feed(request: Request) -> WebrcadeFeedSchema:
         )
 
     return WebrcadeFeedSchema(
-        title="RomM Feed",
-        longTitle="Custom RomM Feed",
-        description="Custom feed from your RomM library",
-        thumbnail="https://raw.githubusercontent.com/rommapp/romm/release/.github/resources/isotipo.svg",
+        title=f"{PRODUCT_NAME} Feed",
+        longTitle=f"Custom {PRODUCT_NAME} Feed",
+        description=f"Custom feed from your {PRODUCT_NAME} library",
+        # The instance's own mark, rather than a link to a repository's copy.
+        thumbnail=str(
+            URLPath("/assets/isotipo.svg").make_absolute_url(request.base_url)
+        ),
         background="https://raw.githubusercontent.com/rommapp/romm/release/.github/resources/screenshots/gallery.png",
         categories=categories,
     )
@@ -708,7 +712,7 @@ def kekatsu_ds_feed(
             platform=platform.slug,
             region=rom.regions[0] if rom.regions else "ANY",
             version=rom.revision or "1.0.0",
-            author="RomM",
+            author=PRODUCT_NAME,
             download_url=download_url,
             filename=rom.fs_name,
             size=rom.fs_size_bytes,

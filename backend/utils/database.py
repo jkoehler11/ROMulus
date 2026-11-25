@@ -7,6 +7,8 @@ from sqlalchemy.dialects import postgresql as sa_pg
 from sqlalchemy.orm import InstrumentedAttribute
 from sqlalchemy.sql import ColumnElement
 
+from utils import PRODUCT_NAME
+
 # These helpers only read `.engine`, which an Engine answers with itself.
 type DatabaseBind = sa.Engine | sa.Connection
 
@@ -164,9 +166,10 @@ def unsupported_server_version(dialect: sa.Dialect) -> str | None:
         return None
 
     return (
-        f"RomM needs {engine} {'.'.join(map(str, minimum))} or newer, but the "
-        f"database server runs {'.'.join(map(str, version))}. Upgrade the server, "
-        "then start RomM again. See https://docs.romm.app/latest/install/databases/"
+        f"{PRODUCT_NAME} needs {engine} {'.'.join(map(str, minimum))} or newer, "
+        f"but the database server runs {'.'.join(map(str, version))}. Upgrade the "
+        f"server, then start {PRODUCT_NAME} again. "
+        "See https://docs.romm.app/latest/install/databases/"
     )
 
 

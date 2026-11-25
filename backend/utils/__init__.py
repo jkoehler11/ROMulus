@@ -10,6 +10,11 @@ from __version__ import __version__
 # Embedded straight into a YouTube URL, so anything outside this must be dropped.
 YOUTUBE_ID_RE: Final = re.compile(r"[A-Za-z0-9_-]{11}")
 
+# The fork's name, wherever a user reads it: page titles, emails, feeds. Package
+# and environment names stay RomM's so a release merge stays a merge.
+PRODUCT_NAME: Final = "ROMulus"
+SOURCE_URL: Final = "https://github.com/jkoehler11/ROMulus"
+
 _REPO_ROOT: Final = Path(__file__).resolve().parent.parent.parent
 
 

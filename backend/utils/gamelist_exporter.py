@@ -25,6 +25,7 @@ from handler.filesystem import fs_platform_handler, fs_resource_handler
 from handler.metadata.gamelist_handler import gamelist_path_to_rel_path
 from logger.logger import log
 from models.rom import HAS_FILE_ON_DISK_FILTERS, Rom
+from utils import PRODUCT_NAME
 from utils.datetime import format_utc
 from utils.filesystem import join_rel_path, place_export_asset, rel_platform_folder
 from utils.urls import rom_content_url, rom_id_from_content_url
@@ -333,7 +334,7 @@ class GamelistExporter:
 
         # Add scraping info
         scrap = SubElement(game, "scrap")
-        scrap.set("name", "RomM")
+        scrap.set("name", PRODUCT_NAME)
         scrap.set("date", datetime.now().strftime("%Y%m%dT%H%M%S"))
 
         return game

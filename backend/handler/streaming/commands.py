@@ -12,6 +12,7 @@ from handler.streaming import broker, webstation
 from handler.streaming.config import ResolvedContainer
 from handler.streaming.protocol import ACK_TIMEOUT
 from logger.logger import log
+from utils import PRODUCT_NAME
 
 
 def launch(
@@ -46,7 +47,7 @@ def launch(
             "ROM broker",
             url,
             "Check that broker.py is running inside the emulator container "
-            "and that port 8000 is reachable from the RomM host.",
+            f"and that port 8000 is reachable from the {PRODUCT_NAME} host.",
         )
 
 

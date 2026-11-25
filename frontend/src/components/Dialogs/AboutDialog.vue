@@ -7,6 +7,7 @@ import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useEmitterEvent } from "@/composables/useEmitterEvent";
 import { useVersionDisplay } from "@/composables/useVersionDisplay";
+import { PRODUCT_NAME, SOURCE_REPO_URL } from "@/brand";
 import { RDialog, RIcon, RImage, RTooltip } from "@/lib";
 
 defineOptions({ inheritAttrs: false });
@@ -43,19 +44,7 @@ const links = computed<Link[]>(() => [
     icon: "mdi-code-braces",
     label: t("common.about-source-code"),
     value: "GitHub",
-    href: "https://github.com/rommapp/romm",
-  },
-  {
-    icon: "mdi-file-document-outline",
-    label: t("common.about-documentation"),
-    value: "docs.romm.app",
-    href: "https://docs.romm.app",
-  },
-  {
-    icon: "mdi-account-group",
-    label: t("common.about-community"),
-    value: "Discord",
-    href: "https://discord.com/invite/P5HtHnhUDH",
+    href: SOURCE_REPO_URL,
   },
 ]);
 
@@ -99,7 +88,7 @@ watch(() => links.value.map((link) => link.value), measure, { flush: "post" });
             <RImage
               v-if="link.isotipo"
               src="/assets/isotipo.svg"
-              alt="RomM"
+              :alt="PRODUCT_NAME"
               :width="18"
               :height="18"
               contain

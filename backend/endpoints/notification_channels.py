@@ -24,6 +24,7 @@ from handler.notification_channels.channels import ChannelError
 from handler.notification_channels.confirmation import CodeCooldownError
 from models.notification_channel import NotificationChannel, NotificationChannelType
 from models.user import User
+from utils import PRODUCT_NAME
 from utils.router import APIRouter
 
 router = APIRouter(
@@ -92,8 +93,8 @@ def get_apprise_services(request: Request) -> list[AppriseServiceSchema]:
     responses={
         status.HTTP_400_BAD_REQUEST: {
             "description": (
-                "Apprise cannot read the URL, or the URL is for a service RomM does"
-                " not offer."
+                "Apprise cannot read the URL, or the URL is for a service "
+                f"{PRODUCT_NAME} does not offer."
             )
         },
         status.HTTP_403_FORBIDDEN: {"description": "The caller is not an admin."},
