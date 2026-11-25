@@ -328,6 +328,10 @@ RUN mkdir -p /var/www/html/assets/romm && \
 COPY ./backend /backend
 RUN python3 -m compileall -q /backend
 
+# The licence and the record of what this fork changed travel with the image, so
+# a copy pulled from the registry carries its own terms.
+COPY ./LICENSE ./NOTICE /licenses/
+
 # Setup init script and config files
 COPY ./docker/init_scripts/* /
 COPY ./docker/nginx/js/ /etc/nginx/js/
