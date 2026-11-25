@@ -19,7 +19,7 @@ Plugins are read from `PLUGINS_BASE_PATH`, which defaults to `$ROMM_BASE_PATH/pl
 
 ```text
 /romm/plugins/
-  rommdeck/
+  rommarcade/
     plugin.json
 ```
 
@@ -46,18 +46,18 @@ The shelf is read on every request and cached until a manifest changes, so a fol
 
 ```json
 {
-  "id": "rommdeck",
-  "name": "RommDeck",
-  "version": "1.0.0",
-  "description": "Open a game on the device RommDeck manages.",
-  "author": "s0liton",
-  "homepage": "https://github.com/s0liton/RommDeck",
+  "id": "rommarcade",
+  "name": "RomMArcade",
+  "version": "0.1.0",
+  "description": "Open a game in RomMArcade: it installs the game through EmuDeck if needed, then plays it.",
+  "author": "jkoehler11",
+  "homepage": "https://github.com/jkoehler11/RomMArcade",
   "actions": [
     {
-      "id": "open",
-      "label": "Open in RommDeck",
-      "icon": "mdi-monitor-dashboard",
-      "url": "rommdeck://open?rom={rom_id}&platform={platform_slug}",
+      "id": "play",
+      "label": "Play in RomMArcade",
+      "icon": "mdi-gamepad-variant",
+      "url": "rommarcade://open?rom={rom_id}&platform={platform_slug}&name={rom_name}&play=1",
       "open": "new-tab"
     }
   ]
@@ -284,6 +284,6 @@ A custom scheme only resolves on machines that have registered a handler. Elsewh
 
 The UI reads the shelf when a game page opens and keeps it for the session, so a plugin added while a tab is open appears on the next full page load.
 
-## Example: RommDeck
+## Example: RomMArcade
 
-[RommDeck](https://github.com/s0liton/RommDeck) downloads and syncs your ROMulus library to a machine with the emulators, and keeps your saves in step. Its plugin lives in its own repository, [rommdeck-plugin](https://github.com/jkoehler11/rommdeck-plugin), and adds a way to start a game from the Play chooser by handing it to a `rommdeck://` handler on the machine running RommDeck. A plugin is a manifest, so it is not part of RomM's source: install it from Settings, Plugins, or drop the folder on the shelf.
+[RomMArcade](https://github.com/jkoehler11/RomMArcade) browses your ROMulus library, installs games through EmuDeck and starts them with the launchers EmuDeck writes. Its plugin lives in its own repository, [rommarcade-plugin](https://github.com/jkoehler11/rommarcade-plugin), which also carries the `rommarcade://` handler for a desktop install that did not register one, and adds a way to start a game from the Play chooser by handing it to that handler. A plugin is a manifest, so it is not part of RomM's source: install it from Settings, Plugins, or drop the folder on the shelf.
