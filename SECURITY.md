@@ -1,21 +1,44 @@
-# Reporting Security Issues
+# Security Policy
 
-Thanks for helping make RomM safer for everyone.
+ROMulus is RomM with a plugin system on top. Thank you for helping keep it, and
+the instances people run with it, safe.
 
-If you believe you have found a security vulnerability in RomM, please report it to us through coordinated disclosure.
+## Reporting a vulnerability
 
-**Do not report security vulnerabilities through public GitHub issues, discussions, pull requests, or on our public Discord server.**
+**Do not open a public issue, discussion, pull request, or chat message about a
+security problem.** Use GitHub's private vulnerability reporting:
 
-Instead, use the [vulnerability report form](https://github.com/rommapp/romm/security/advisories/new) on GitHub.
+- **[Report it here](https://github.com/jkoehler11/ROMulus/security/advisories/new)** for anything in this fork: the plugin system (install, reading the
+  shelf, panels, settings), the plugin routes, the settings page, this
+  repository's CI, or the published image.
 
-Please include as much of the information listed below as you can to help us better understand and resolve the issue:
+Most of this code is RomM's. If the problem is in that part (scanning, auth,
+saves and sync, the player, metadata providers), please also report it to
+upstream at <https://github.com/rommapp/romm/security/advisories/new>: they own
+that code, fix it there, and the fix reaches every RomM and ROMulus instance on
+the next release merge. Reporting it in both places is welcome; reporting it
+only upstream still gets it fixed here.
 
-- The type of issue (e.g., permission bypass, remote code execution, etc.)
-- Full paths of source file(s) related to the manifestation of the issue
-- The location of the affected source code (tag/branch/commit or direct URL)
-- Any special configuration required to reproduce the issue
-- Step-by-step instructions to reproduce the issue
-- Proof-of-concept or exploit code (if possible)
-- Impact of the issue (including how an attacker might exploit the issue)
+## What to include
 
-This information will help us investigate and patch the issue more quickly.
+- The type of issue (permission bypass, remote code execution, SSRF, path
+  traversal, credential exposure, and so on)
+- Full paths of the source files involved
+- The tag, branch, commit or image digest you were running
+- Any configuration needed to reproduce it
+- Step-by-step reproduction, and a proof of concept if you have one
+- The impact, including how an attacker would use it
+
+## Supported versions
+
+The fork builds images from `main`, and a fix lands in the next image built from
+it. Older tags are not patched; update to the current image before reporting,
+and say which commit or digest you tested.
+
+## The plugin boundary
+
+Plugins are declarative by design: a manifest on disk describes buttons that open
+a URL, and nothing in a plugin folder runs on the server. A report that shows a
+plugin making the server run code, reach a private address, escape its folder, or
+have a setting rendered unescaped is exactly the kind of security issue this fork
+wants to hear about.

@@ -63,20 +63,21 @@ decisions when appropriate.
 
 ## Scope
 
-This Code of Conduct applies within all community spaces, including GitHub
-issues, pull requests, and discussions, the Discord server, the subreddit, and
-any other channel run by the project. It also applies when an individual is
-officially representing the community in public spaces.
-Examples of representing our community include using an official e-mail address,
-posting via an official social media account, or acting as an appointed
-representative at an online or offline event.
+This Code of Conduct applies in the spaces this project runs: this repository's
+issues, pull requests, discussions and code review, and any other channel the
+maintainer opens for ROMulus. It also applies when an individual is officially
+representing the project in public spaces, for example by posting from an
+official account or acting as an appointed representative at an event.
+
+It does not govern RomM's own spaces. Upstream has its own code of conduct, and
+it applies when you are in their repository, Discord server or subreddit.
 
 ## Enforcement
 
 Instances of abusive, harassing, or otherwise unacceptable behavior may be
-reported to the community leaders responsible for enforcement at
-<community@romm.app>.
-All complaints will be reviewed and investigated promptly and fairly.
+reported to the maintainer responsible for enforcement at
+<james@koehlerkilleen.org>. All complaints will be reviewed and investigated
+promptly and fairly.
 
 All community leaders are obligated to respect the privacy and security of the
 reporter of any incident.
